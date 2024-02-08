@@ -1,2 +1,0 @@
-# cscdigitalindia.in
-cscdigitalindia.in

@@ -107,3 +107,67 @@
     
 })(jQuery);
 
+const blogPosts = [
+  {
+    title: "My First Blog Post",
+    author: "Author Name",
+    date: "October 28, 2024",
+    categories: ["Category1", "Category2"],
+    content: "This is the content of my first blog post..."
+  },
+  {
+    title: "Another Blog Post",
+    author: "Author Name",
+    date: "October 27, 2024",
+    categories: ["Category1", "Category3"],
+    content: "This is some more content for a second post..."
+  }
+];
+function loadBlogPosts() {
+  const blogContainer = document.querySelector('.blog-list'); // Your existing blog list container
+  blogContainer.innerHTML = ''; // Clear existing content
+
+  blogPosts.forEach(post => {
+    const postElement = document.createElement('article');
+    postElement.className = 'blog-post';
+
+    postElement.innerHTML = `
+      <h2>${post.title}</h2>
+      <p class="meta">By ${post.author} | ${post.date}</p>
+      <p class="category">Categories: ${post.categories.join(', ')}</p>
+      <p>${post.content}</p>
+      <a href="#" class="read-more" onclick="loadFullPost('${post.title}')">Read More</a>
+    `;
+
+    blogContainer.appendChild(postElement);
+  });
+}
+
+function loadFullPost(title) {
+  const post = blogPosts.find(post => post.title === title);
+  if (post) {
+    document.querySelector('.blog-title').textContent = post.title;
+    document.querySelector('.blog-meta .author').textContent = post.author;
+    document.querySelector('.blog-meta .date').textContent = post.date;
+    document.querySelector('.blog-category').innerHTML = `Categories: ${post.categories.map(cat => `<a href="#">${cat}</a>`).join(', ')}`;
+    document.querySelector('.blog-content').textContent = post.content;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadBlogPosts);
+const comments = [];
+
+function addComment() {
+  const commentInput = document.getElementById('comment-input');
+  const commentText = commentInput.value.trim();
+  if (commentText) {
+    comments.push(commentText);
+    commentInput.value = '';
+    displayComments();
+  }
+}
+
+function displayComments() {
+  const commentsList = document.getElementById('comments-list');
+  commentsList.innerHTML = comments.map(comment => `<p>${comment}</p>`).join('');
+}

@@ -6,6 +6,39 @@
     --dark: #1D1D27;
 }
 
+/* Blog Post Styling */
+.blog-post {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.blog-title {
+  font-size: 2rem;
+  margin-top: 0;
+}
+
+.blog-meta {
+  color: #888;
+}
+
+.blog-category a {
+  color: #0073e6;
+  text-decoration: none;
+}
+
+.comments-section {
+  margin-top: 30px;
+}
+
+#comment-input {
+  resize: vertical;
+}
+
+.comments-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
 
 /*** Spinner ***/
 #spinner {

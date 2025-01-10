@@ -1,3 +1,16 @@
+
+/* Add this code */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  /* Adjust padding for larger screens */
+}
+
+
 /********** Template CSS **********/
 :root {
     --primary: #2124B1;

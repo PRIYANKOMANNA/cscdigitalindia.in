@@ -119,30 +119,28 @@
 
 <script>
     const jobData = [
-       Here are the lines from the given dataset:
-
-{ organization: "BDO Medinipur", posts: 7, postName: "Community Resource Persons", qualification: "Degree", deadline: "24-01-25" },
-{ organization: "DHFW West Bengal", posts: 29, postName: "Senior Resident (Walk-in)", qualification: "", deadline: "15-01-25" },
-{ organization: "IIT Kharagpur", posts: 5, postName: "Planning Executive, Senior Office Executive & Other", qualification: "PhD, PG Degree, Degree", deadline: "24-01-25" },
-{ organization: "NCVBDC", posts: 1, postName: "Entomologist", qualification: "PG Degree", deadline: "18-01-25" },
-{ organization: "MCA, Food and Public Distribution", posts: 8, postName: "Scientific officer (Chemical)", qualification: "PG Degree, Degree", deadline: "17-01-25" },
-{ organization: "BDO Khejuri", posts: 5, postName: "Community Resource Persons", qualification: "Degree", deadline: "24-01-25" },
-{ organization: "MCA, Food and Public Distribution", posts: 2, postName: "Scientific Officer (Electrical)", qualification: "PG Degree, Degree", deadline: "17-01-25" },
-{ organization: "MCA, Food and Public Distribution", posts: 2, postName: "Scientist-B", qualification: "PG Degree, Degree", deadline: "17-01-25" },
-{ organization: "MCA, Food and Public Distribution", posts: 1, postName: "Scientific Officer (Mechanical)", qualification: "PG Degree, Degree", deadline: "17-01-25" },
-{ organization: "MCA Food and Public Distribution", posts: 1, postName: "Scientific Officer (Non-Destructive)", qualification: "PG Degree, Degree", deadline: "17-01-25" },
-{ organization: "DL & RO Purba Medinipur", posts: 19, postName: "Data Entry Operator", qualification: "Degree", deadline: "15-01-25" },
-{ organization: "Coal India", posts: null, postName: "Management Trainee (MT)", qualification: "", deadline: "" },
-{ organization: "Calcutta High Court", posts: 8, postName: "Interpreting Officer", qualification: "Degree", deadline: "15-01-25" },
-{ organization: "SBI", posts: 150, postName: "Trade Finance Officer", qualification: "Graduation and Certificate in Forex by IIBF", deadline: "23-01-25" },
-{ organization: "Bishnupur District Hospital West Bengal", posts: 2, postName: "Housestaffship", qualification: "", deadline: "10-01-25" },
-{ organization: "RG Kar Medical College Kolkata", posts: 84, postName: "House Staff", qualification: "", deadline: "07-01-25" },
-{ organization: "AIIMS Kalyani", posts: 45, postName: "Senior Resident (Non-Academic)", qualification: "PG Degree, MD, MS, DNB, DM, MCh, M.Sc, M.Biotech, PhD", deadline: "08-01-25" },
-{ organization: "UCO Bank", posts: 68, postName: "IT Officer, Chartered Accountant & Other", qualification: "PG Degree, Degree, ICAI, ICMAI, ICSI, MBA, PGDM, BE, B.Tech, MCA, M.Sc", deadline: "20-01-25" },
-{ organization: "NBMS", posts: 1, postName: "Research Scientist", qualification: "MBBS, BDS, B.V.Sc, AH", deadline: "10-01-25" },
-{ organization: "SHDS", posts: null, postName: "Research Scientist (Walk-in)", qualification: "MA, M.Sc, M.Phil, MPH", deadline: "10-01-25" },
-{ organization: "AAI", posts: 89, postName: "Junior Assistant", qualification: "10th, 12th", deadline: "28-01-25" },
-{ organization: "Kolkata Metro Railway", posts: 128, postName: "Act Apprentice", qualification: "10th, ITI", deadline: "22-01-25" }
+        { organization: "BDO Medinipur", posts: 7, postName: "Community Resource Persons", qualification: "Degree", deadline: "24-01-25" },
+        { organization: "DHFW West Bengal", posts: 29, postName: "Senior Resident (Walk-in)", qualification: "", deadline: "15-01-25" },
+        { organization: "IIT Kharagpur", posts: 5, postName: "Planning Executive, Senior Office Executive & Other", qualification: "PhD, PG Degree, Degree", deadline: "24-01-25" },
+        { organization: "NCVBDC", posts: 1, postName: "Entomologist", qualification: "PG Degree", deadline: "18-01-25" },
+        { organization: "MCA, Food and Public Distribution", posts: 8, postName: "Scientific officer (Chemical)", qualification: "PG Degree, Degree", deadline: "17-01-25" },
+        { organization: "BDO Khejuri", posts: 5, postName: "Community Resource Persons", qualification: "Degree", deadline: "24-01-25" },
+        { organization: "MCA, Food and Public Distribution", posts: 2, postName: "Scientific Officer (Electrical)", qualification: "PG Degree, Degree", deadline: "17-01-25" },
+        { organization: "MCA, Food and Public Distribution", posts: 2, postName: "Scientist-B", qualification: "PG Degree, Degree", deadline: "17-01-25" },
+        { organization: "MCA, Food and Public Distribution", posts: 1, postName: "Scientific Officer (Mechanical)", qualification: "PG Degree, Degree", deadline: "17-01-25" },
+        { organization: "MCA Food and Public Distribution", posts: 1, postName: "Scientific Officer (Non-Destructive)", qualification: "PG Degree, Degree", deadline: "17-01-25" },
+        { organization: "DL & RO Purba Medinipur", posts: 19, postName: "Data Entry Operator", qualification: "Degree", deadline: "15-01-25" },
+        { organization: "Coal India", posts: null, postName: "Management Trainee (MT)", qualification: "", deadline: "" },
+        { organization: "Calcutta High Court", posts: 8, postName: "Interpreting Officer", qualification: "Degree", deadline: "15-01-25" },
+        { organization: "SBI", posts: 150, postName: "Trade Finance Officer", qualification: "Graduation and Certificate in Forex by IIBF", deadline: "23-01-25" },
+        { organization: "Bishnupur District Hospital West Bengal", posts: 2, postName: "Housestaffship", qualification: "", deadline: "10-01-25" },
+        { organization: "RG Kar Medical College Kolkata", posts: 84, postName: "House Staff", qualification: "", deadline: "07-01-25" },
+        { organization: "AIIMS Kalyani", posts: 45, postName: "Senior Resident (Non-Academic)", qualification: "PG Degree, MD, MS, DNB, DM, MCh, M.Sc, M.Biotech, PhD", deadline: "08-01-25" },
+        { organization: "UCO Bank", posts: 68, postName: "IT Officer, Chartered Accountant & Other", qualification: "PG Degree, Degree, ICAI, ICMAI, ICSI, MBA, PGDM, BE, B.Tech, MCA, M.Sc", deadline: "20-01-25" },
+        { organization: "NBMS", posts: 1, postName: "Research Scientist", qualification: "MBBS, BDS, B.V.Sc, AH", deadline: "10-01-25" },
+        { organization: "SHDS", posts: null, postName: "Research Scientist (Walk-in)", qualification: "MA, M.Sc, M.Phil, MPH", deadline: "10-01-25" },
+        { organization: "AAI", posts: 89, postName: "Junior Assistant", qualification: "10th, 12th", deadline: "28-01-25" },
+        { organization: "Kolkata Metro Railway", posts: 128, postName: "Act Apprentice", qualification: "10th, ITI", deadline: "22-01-25" }
     ];
 
     const tableBody = document.querySelector('#jobTable tbody');
@@ -155,10 +153,10 @@
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${item.organization}</td>
-                <td>${item.posts}</td>
+                <td>${item.posts || 'N/A'}</td>
                 <td>${item.postName}</td>
-                <td>${item.qualification}</td>
-                <td>${item.deadline}</td>
+                <td>${item.qualification || 'N/A'}</td>
+                <td>${item.deadline || 'N/A'}</td>
             `;
             tableBody.appendChild(row);
         });
@@ -189,17 +187,17 @@
         const sortedRows = rows.sort((rowA, rowB) => {
             const cellA = rowA.cells[colIndex].textContent;
             const cellB = rowB.cells[colIndex].textContent;
-            return cellA > cellB ? 1 : (cellA < cellB ? -1 : 0);
+            return cellA.localeCompare(cellB);
         });
         tableBody.innerHTML = '';
-        sortedRows.forEach(row => tableBody.appendChild(row));
+        tableBody.append(...sortedRows);
     }
 
     organizationFilter.addEventListener('change', filterData);
     searchInput.addEventListener('input', filterData);
 
     populateFilters();
-    populateTable(jobData); // Initial population of the table
+    populateTable(jobData);
 </script>
 
 </body>

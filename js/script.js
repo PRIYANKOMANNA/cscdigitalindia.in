@@ -127,6 +127,33 @@ document.getElementById("verify-form").addEventListener("submit", async (e) => {
 
 
 
+async function generateText() {
+  const prompt = document.getElementById('prompt').value;
+
+  if (!prompt) {
+    document.getElementById('generatedText').innerText = "Please enter a prompt.";
+    return;
+  }
+
+  try {
+    const response = await fetch("https://your-backend-api-url/generate", {  // Replace with your API URL
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ prompt: prompt })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      document.getElementById('generatedText').innerText = data.response;
+    } else {
+      document.getElementById('generatedText').innerText = "Error generating text.";
+    }
+  } catch (error) {
+    document.getElementById('generatedText').innerText = "Network error.";
+  }
+}
 
 
 

@@ -81,7 +81,7 @@
 /* Chatbox Messages */
 #chatbox {
     height: 280px;
-    padding: 10px;
+    padding: 50px;
     overflow-y: auto;
     background: #f9f9f9;
 }

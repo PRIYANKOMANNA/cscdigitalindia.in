@@ -1,75 +1,97 @@
-(function ($) {
-    "use strict";
+// Configuration Object
+const CONFIG = {
+  API_BASE_URL: "https://your-heroku-backend.herokuapp.com",
+  MAP: {
+    defaultCenter: { lat: 22.5726, lng: 88.3639 },
+    defaultZoom: 12,
+    updateInterval: 5000,
+    markerIcon: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+  },
+  SELECTORS: {
+    spinner: "#spinner",
+    navbar: ".navbar",
+    backToTop: ".back-to-top",
+    portfolio: {
+      container: ".portfolio-container",
+      filters: "#portfolio-flters li"
+    }
+  }
+};
 
-    // Spinner
-    var spinner = function () {
-        setTimeout(function () {
-            if ($('#spinner').length > 0) {
-                $('#spinner').removeClass('show');
-            }
-        }, 1);
-    };
-    spinner();
-    
-    
-    // Initiate the wowjs
-    new WOW().init();
+// Module Pattern Implementation
+const App = (() => {
+  // Private Variables
+  let mapInstance = null;
+  let mapMarker = null;
+  const blogPosts = [];
+  const comments = [];
 
+  // Private Methods
+  const _sanitizeInput = (input) => {
+    const div = document.createElement('div');
+    div.textContent = input;
+    return div.innerHTML;
+  };
 
-    // Sticky Navbar
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 45) {
-            $('.navbar').addClass('sticky-top shadow-sm');
-        } else {
-            $('.navbar').removeClass('sticky-top shadow-sm');
+  const _handleApiError = (error) => {
+    console.error("API Error:", error);
+    _showNotification("An error occurred. Please try again.", "error");
+  };
+
+  const _showNotification = (message, type = "info") => {
+    const notification = document.createElement("div");
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
+  };
+
+  // Public Methods
+  return {
+    initialize() {
+      // Initialization sequence
+      this.initSpinner();
+      this.initAnimations();
+      this.initEventListeners();
+      this.initCarousels();
+      this.initIsotope();
+    },
+
+    initSpinner() {
+      setTimeout(() => {
+        const spinner = document.querySelector(CONFIG.SELECTORS.spinner);
+        if (spinner) spinner.classList.remove("show");
+      }, 100);
+    },
+
+    initAnimations() {
+      new WOW().init();
+    },
+
+    initEventListeners() {
+      // Window Scroll Events
+      window.addEventListener("scroll", () => {
+        // Sticky Navbar
+        const navbar = document.querySelector(CONFIG.SELECTORS.navbar);
+        navbar?.classList.toggle("sticky-top shadow-sm", window.scrollY > 45);
+
+        // Back to Top Button
+        const backToTop = document.querySelector(CONFIG.SELECTORS.backToTop);
+        if (backToTop) {
+          backToTop.style.display = window.scrollY > 100 ? "block" : "none";
         }
-    });
-    
-    
-    // Dropdown on mouse hover
-    const $dropdown = $(".dropdown");
-    const $dropdownToggle = $(".dropdown-toggle");
-    const $dropdownMenu = $(".dropdown-menu");
-    const showClass = "show";
-    
-    $(window).on("load resize", function() {
-        if (this.matchMedia("(min-width: 992px)").matches) {
-            $dropdown.hover(
-            function() {
-                const $this = $(this);
-                $this.addClass(showClass);
-                $this.find($dropdownToggle).attr("aria-expanded", "true");
-                $this.find($dropdownMenu).addClass(showClass);
-            },
-            function() {
-                const $this = $(this);
-                $this.removeClass(showClass);
-                $this.find($dropdownToggle).attr("aria-expanded", "false");
-                $this.find($dropdownMenu).removeClass(showClass);
-            }
-            );
-        } else {
-            $dropdown.off("mouseenter mouseleave");
-        }
-    });
-    
-    
-    // Back to top button
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 100) {
-            $('.back-to-top').fadeIn('slow');
-        } else {
-            $('.back-to-top').fadeOut('slow');
-        }
-    });
-    $('.back-to-top').click(function () {
-        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
-        return false;
-    });
+      });
 
+      // Back to Top Click
+      document.querySelector(CONFIG.SELECTORS.backToTop)?.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    },
 
-    // Testimonials carousel
-    $(".testimonial-carousel").owlCarousel({
+    initCarousels() {
+      // Testimonials Carousel
+      $(".testimonial-carousel").owlCarousel({
         autoplay: true,
         smartSpeed: 1000,
         margin: 25,
@@ -77,232 +99,195 @@
         loop: true,
         center: true,
         responsive: {
-            0:{
-                items:1
-            },
-            576:{
-                items:1
-            },
-            768:{
-                items:2
-            },
-            992:{
-                items:3
-            }
+          0: { items: 1 },
+          576: { items: 1 },
+          768: { items: 2 },
+          992: { items: 3 }
         }
-    });
+      });
+    },
 
+    initIsotope() {
+      // Portfolio Isotope
+      const portfolioIsotope = new Isotope(CONFIG.SELECTORS.portfolio.container, {
+        itemSelector: ".portfolio-item",
+        layoutMode: "fitRows"
+      });
 
-    // Portfolio isotope and filter
-    var portfolioIsotope = $('.portfolio-container').isotope({
-        itemSelector: '.portfolio-item',
-        layoutMode: 'fitRows'
-    });
-    $('#portfolio-flters li').on('click', function () {
-        $("#portfolio-flters li").removeClass('active');
-        $(this).addClass('active');
+      document.querySelectorAll(CONFIG.SELECTORS.portfolio.filters).forEach(item => {
+        item.addEventListener("click", () => {
+          document.querySelector(`${CONFIG.SELECTORS.portfolio.filters}.active`)
+            ?.classList.remove("active");
+          item.classList.add("active");
+          portfolioIsotope.arrange({ filter: item.dataset.filter });
+        });
+      });
+    },
 
-        portfolioIsotope.isotope({filter: $(this).data('filter')});
-    });
-    
-})(jQuery);
-
-const blogPosts = [
-  {
-    title: "My First Blog Post",
-    author: "Author Name",
-    date: "October 28, 2024",
-    categories: ["Category1", "Category2"],
-    content: "This is the content of my first blog post..."
-  },
-  {
-    title: "Another Blog Post",
-    author: "Author Name",
-    date: "October 27, 2024",
-    categories: ["Category1", "Category3"],
-    content: "This is some more content for a second post..."
-  }
-];
-function loadBlogPosts() {
-  const blogContainer = document.querySelector('.blog-list'); // Your existing blog list container
-  blogContainer.innerHTML = ''; // Clear existing content
-
-  blogPosts.forEach(post => {
-    const postElement = document.createElement('article');
-    postElement.className = 'blog-post';
-
-    postElement.innerHTML = `
-      <h2>${post.title}</h2>
-      <p class="meta">By ${post.author} | ${post.date}</p>
-      <p class="category">Categories: ${post.categories.join(', ')}</p>
-      <p>${post.content}</p>
-      <a href="#" class="read-more" onclick="loadFullPost('${post.title}')">Read More</a>
-    `;
-
-    blogContainer.appendChild(postElement);
-  });
-}
-
-function loadFullPost(title) {
-  const post = blogPosts.find(post => post.title === title);
-  if (post) {
-    document.querySelector('.blog-title').textContent = post.title;
-    document.querySelector('.blog-meta .author').textContent = post.author;
-    document.querySelector('.blog-meta .date').textContent = post.date;
-    document.querySelector('.blog-category').innerHTML = `Categories: ${post.categories.map(cat => `<a href="#">${cat}</a>`).join(', ')}`;
-    document.querySelector('.blog-content').textContent = post.content;
-  }
-}
-
-document.addEventListener('DOMContentLoaded', loadBlogPosts);
-const comments = [];
-
-function addComment() {
-  const commentInput = document.getElementById('comment-input');
-  const commentText = commentInput.value.trim();
-  if (commentText) {
-    comments.push(commentText);
-    commentInput.value = '';
-    displayComments();
-  }
-}
-
-function displayComments() {
-  const commentsList = document.getElementById('comments-list');
-  commentsList.innerHTML = comments.map(comment => `<p>${comment}</p>`).join('');
-}
-// OTP Verification
-document.getElementById("otp-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("email").value;
-
-  const response = await fetch("https://your-heroku-backend.herokuapp.com/api/generate-otp", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
-  });
-
-  if (response.ok) {
-    document.getElementById("otp-form").style.display = "none";
-    document.getElementById("verify-form").style.display = "block";
-    alert("OTP sent to your email!");
-  } else {
-    alert("Failed to send OTP. Please try again.");
-  }
-});
-
-document.getElementById("verify-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("email").value;
-  const otp = document.getElementById("otp").value;
-
-  const response = await fetch("https://your-heroku-backend.herokuapp.com/api/verify-otp", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, otp }),
-  });
-
-  const message = document.getElementById("otp-message");
-  if (response.ok) {
-    message.textContent = "OTP verified successfully!";
-    message.style.color = "green";
-  } else {
-    message.textContent = "Invalid OTP.";
-    message.style.color = "red";
-  }
-});
-
-// Google Maps Live Location
-
-
-function initializeMap() {
-  const map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 22.5726, lng: 88.3639 }, // Default location (Kolkata)
-    zoom: 12,
-  });
-
-  const marker = new google.maps.Marker({
-    map,
-    position: { lat: 22.5726, lng: 88.3639 },
-    title: "Bus Location",
-  });
-
-  // Update location every 5 seconds
-  setInterval(async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/get-location/bus-id`);
-      if (response.ok) {
-        const location = await response.json();
-        marker.setPosition(location);
-        map.setCenter(location);
+    // Blog System
+    async loadBlogPosts() {
+      try {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/posts`);
+        if (!response.ok) throw new Error("Failed to load posts");
+        const posts = await response.json();
+        blogPosts.length = 0;
+        blogPosts.push(...posts);
+        this.renderBlogPosts();
+      } catch (error) {
+        _handleApiError(error);
       }
-    } catch (error) {
-      console.error("Error fetching location:", error);
+    },
+
+    renderBlogPosts() {
+      const container = document.querySelector(".blog-list");
+      if (!container) return;
+
+      container.innerHTML = blogPosts.map(post => `
+        <article class="blog-post">
+          <h2>${_sanitizeInput(post.title)}</h2>
+          <p class="meta">By ${_sanitizeInput(post.author)} | ${_sanitizeInput(post.date)}</p>
+          <p class="category">Categories: ${post.categories.map(c => `
+            <a href="#">${_sanitizeInput(c)}</a>
+          `).join(", ")}</p>
+          <p>${_sanitizeInput(post.content)}</p>
+          <button class="read-more" data-id="${post.id}">Read More</button>
+        </article>
+      `).join("");
+    },
+
+    // Comment System
+    addComment(text) {
+      const sanitizedText = _sanitizeInput(text.trim());
+      if (!sanitizedText) return;
+
+      comments.push(sanitizedText);
+      this.renderComments();
+    },
+
+    renderComments() {
+      const container = document.getElementById("comments-list");
+      if (container) {
+        container.innerHTML = comments
+          .map(comment => `<p>${comment}</p>`)
+          .join("");
+      }
+    },
+
+    // OTP System
+    async handleOTPRequest(email) {
+      try {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/generate-otp`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
+        });
+
+        if (!response.ok) {
+          const error = await response.text();
+          throw new Error(error);
+        }
+
+        document.getElementById("otp-form").classList.add("hidden");
+        document.getElementById("verify-form").classList.remove("hidden");
+        _showNotification("OTP sent to your email!", "success");
+      } catch (error) {
+        _handleApiError(error);
+      }
+    },
+
+    async verifyOTP(email, otp) {
+      try {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/verify-otp`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, otp })
+        });
+
+        const messageElement = document.getElementById("otp-message");
+        if (!response.ok) {
+          const error = await response.text();
+          messageElement.textContent = error;
+          messageElement.style.color = "red";
+          throw new Error(error);
+        }
+
+        messageElement.textContent = "OTP verified successfully!";
+        messageElement.style.color = "green";
+        _showNotification("OTP verification successful!", "success");
+      } catch (error) {
+        _handleApiError(error);
+      }
+    },
+
+    // Map System
+    initializeMap() {
+      if (!document.getElementById("map")) return;
+
+      mapInstance = new google.maps.Map(document.getElementById("map"), {
+        center: CONFIG.MAP.defaultCenter,
+        zoom: CONFIG.MAP.defaultZoom
+      });
+
+      mapMarker = new google.maps.Marker({
+        map: mapInstance,
+        position: CONFIG.MAP.defaultCenter,
+        title: "Bus Location",
+        icon: CONFIG.MAP.markerIcon
+      });
+
+      this.startLocationUpdates();
+    },
+
+    async updateLocation() {
+      try {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/api/get-location/bus-id`);
+        if (!response.ok) throw new Error("Location update failed");
+
+        const location = await response.json();
+        mapMarker.setPosition(location);
+        mapInstance.panTo(location);
+      } catch (error) {
+        _handleApiError(error);
+      }
+    },
+
+    startLocationUpdates() {
+      setInterval(() => this.updateLocation(), CONFIG.MAP.updateInterval);
     }
-  }, 5000);
-}
+  };
+})();
 
-window.onload = initializeMap;
+// Initialize Application
+document.addEventListener("DOMContentLoaded", () => {
+  App.initialize();
 
+  // Blog System
+  App.loadBlogPosts();
 
-document.getElementById("otp-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("email").value;
+  // Comment System
+  document.getElementById("comment-form")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const input = document.getElementById("comment-input");
+    App.addComment(input.value);
+    input.value = "";
+  });
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/generate-otp`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
+  // OTP System
+  document.getElementById("otp-form")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    App.handleOTPRequest(email);
+  });
 
-    if (response.ok) {
-      document.getElementById("otp-form").style.display = "none";
-      document.getElementById("verify-form").style.display = "block";
-      alert("OTP sent to your email!");
-    } else {
-      const error = await response.text();
-      alert(`Error: ${error}`);
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Failed to send OTP. Please check your network or server.");
+  document.getElementById("verify-form")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const otp = document.getElementById("otp").value;
+    App.verifyOTP(email, otp);
+  });
+
+  // Initialize Map
+  if (typeof google !== "undefined") {
+    App.initializeMap();
   }
 });
-
-document.getElementById("verify-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("email").value;
-  const otp = document.getElementById("otp").value;
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/verify-otp`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, otp }),
-    });
-
-    const message = document.getElementById("otp-message");
-    if (response.ok) {
-      message.textContent = "OTP verified successfully!";
-      message.style.color = "green";
-    } else {
-      const error = await response.text();
-      message.textContent = `Error: ${error}`;
-      message.style.color = "red";
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Failed to verify OTP. Please check your network or server.");
-  }
-});
-
-
-
-
-
-
-
-
-
-

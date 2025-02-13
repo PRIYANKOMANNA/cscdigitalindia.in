@@ -1,162 +1,47 @@
-// OTP Verification
-document.getElementById("otp-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("email").value;
+// Initialize WOW.js for animations
+new WOW().init();
 
-  const response = await fetch("https://your-heroku-backend.herokuapp.com/api/generate-otp", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+  // OTP Form Handling
+  dom.otpForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    await handleOTP.generate(dom.emailInput.value);
   });
 
-  if (response.ok) {
-    document.getElementById("otp-form").style.display = "none";
-    document.getElementById("verify-form").style.display = "block";
-    alert("OTP sent to your email!");
-  } else {
-    alert("Failed to send OTP. Please try again.");
-  }
-});
-
-document.getElementById("verify-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("email").value;
-  const otp = document.getElementById("otp").value;
-
-  const response = await fetch("https://your-heroku-backend.herokuapp.com/api/verify-otp", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, otp }),
+  dom.verifyForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    await handleOTP.verify(dom.emailInput.value, dom.otpInput.value);
   });
 
-  const message = document.getElementById("otp-message");
-  if (response.ok) {
-    message.textContent = "OTP verified successfully!";
-    message.style.color = "green";
-  } else {
-    message.textContent = "Invalid OTP.";
-    message.style.color = "red";
-  }
-});
+  // Text Generation
+  document.getElementById('generateBtn')?.addEventListener('click', handleTextGeneration.generate);
 
-// Google Maps Live Location
-
-
-function initializeMap() {
-  const map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: 22.5726, lng: 88.3639 }, // Default location (Kolkata)
-    zoom: 12,
+  // Initialize Lightbox
+  [].slice.call(document.querySelectorAll('[data-lightbox]')).forEach(el => {
+    new Lightbox(el);
   });
 
-  const marker = new google.maps.Marker({
-    map,
-    position: { lat: 22.5726, lng: 88.3639 },
-    title: "Bus Location",
-  });
-
-  // Update location every 5 seconds
-  setInterval(async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/get-location/bus-id`);
-      if (response.ok) {
-        const location = await response.json();
-        marker.setPosition(location);
-        map.setCenter(location);
-      }
-    } catch (error) {
-      console.error("Error fetching location:", error);
+  // Initialize Owl Carousel
+  $('.owl-carousel').owlCarousel({
+    loop: true,
+    margin: 10,
+    responsiveClass: true,
+    responsive: {
+      0: { items: 1 },
+      600: { items: 2 },
+      1000: { items: 3 }
     }
-  }, 5000);
+  });
+});
+
+// Google Maps Initialization
+if (typeof google !== 'undefined') {
+  liveLocation.initialize();
 }
 
-window.onload = initializeMap;
-
-
-document.getElementById("otp-form").addEventListener("submit", async (e) => {
+// Back to Top Button
+document.querySelector('.back-to-top').addEventListener('click', (e) => {
   e.preventDefault();
-  const email = document.getElementById("email").value;
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/generate-otp`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-
-    if (response.ok) {
-      document.getElementById("otp-form").style.display = "none";
-      document.getElementById("verify-form").style.display = "block";
-      alert("OTP sent to your email!");
-    } else {
-      const error = await response.text();
-      alert(`Error: ${error}`);
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Failed to send OTP. Please check your network or server.");
-  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
-
-document.getElementById("verify-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("email").value;
-  const otp = document.getElementById("otp").value;
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/verify-otp`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, otp }),
-    });
-
-    const message = document.getElementById("otp-message");
-    if (response.ok) {
-      message.textContent = "OTP verified successfully!";
-      message.style.color = "green";
-    } else {
-      const error = await response.text();
-      message.textContent = `Error: ${error}`;
-      message.style.color = "red";
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Failed to verify OTP. Please check your network or server.");
-  }
-});
-
-
-
-
-async function generateText() {
-  const prompt = document.getElementById('prompt').value;
-
-  if (!prompt) {
-    document.getElementById('generatedText').innerText = "Please enter a prompt.";
-    return;
-  }
-
-  try {
-    const response = await fetch("https://your-backend-api-url/generate", {  // Replace with your API URL
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ prompt: prompt })
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      document.getElementById('generatedText').innerText = data.response;
-    } else {
-      document.getElementById('generatedText').innerText = "Error generating text.";
-    }
-  } catch (error) {
-    document.getElementById('generatedText').innerText = "Network error.";
-  }
-}
-
-
-
-
-
-

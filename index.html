@@ -1,127 +1,66 @@
+<!-- Updated index.html -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Informal | হাঁসি খুশি জেরক্স | CSC Pulsita</title>
-    <meta name="keywords" content="The Informal, CSC Pulsita, services, digital solutions">
-    <meta name="description" content="Your go-to hub for various G2C services, financial assistance, and more with The Informal.">
-
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-    <!-- CSS Stylesheets -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4282728102113205" crossorigin="anonymous"></script>
+    <!-- Existing head content -->
+    <!-- Add this -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 </head>
-
 <body>
-    <div class="container-xxl bg-white p-0">
-
-        <!-- Spinner -->
-        <div id="spinner" class="bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="visually-hidden">Loading...</span>
+    <!-- Updated Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark px-4 px-lg-5 py-3 py-lg-0" style="background: #1d1d27; position: sticky; top: 0; z-index: 1000;">
+        <div class="container-fluid">
+            <!-- Existing brand -->
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto">
+                    <!-- Existing links -->
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Sign Up</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
+    </nav>
 
-        <nav class="navbar navbar-expand-lg navbar-dark px-4 px-lg-5 py-3 py-lg-0" style="background: #1d1d27; position: sticky; top: 0; z-index: 1000;">
-    <div class="container-fluid">
-        <a href="index.html" class="navbar-brand p-0">
-            <h1 class="m-0"><i class="fa fa-search me-2"></i>The Informal</h1>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto">
-                <a href="index.html" class="nav-link active">Home</a>
-                <a href="about.html" class="nav-link">About</a>
-                <a href="service.html" class="nav-link">Services</a>
-                <a href="project.html" class="nav-link">Projects</a>
-                <a href="contact.html" class="nav-link">Contact</a>
+    <!-- Auth Modals -->
+    <div class="modal fade" id="loginModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sign In</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <input type="email" class="form-control mb-3" placeholder="Email" required>
+                        <input type="password" class="form-control mb-3" placeholder="Password" required>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</nav>
 
-        <!-- Hero Section -->
-        <div class="container-xxl py-5 bg-primary hero-header mb-5">
-            <div class="container my-5 py-5 px-lg-5">
-                <div class="row g-5 py-5">
-                    <div class="col-lg-6 text-center text-lg-start">
-                        <h1>WELCOME</h1>
-                        <p class="text-white pb-3 animated zoomIn">CSC PULSITA || হাঁসি খুশি জেরক্স || RAINGEAR || RAINELE</p>
-                        <a href="contact.html" class="btn btn-outline-light py-sm-3 px-sm-5 rounded-pill animated slideInRight">Contact Us</a>
-                    </div>
-                    <div class="col-lg-6 text-center text-lg-start">
-                        <img class="img-fluid" src="img/about.jpg" alt="Hero Imagee">
-                    </div>
-                </div>
+    <!-- Similar modal for registration -->
+
+    <!-- Blog Section -->
+    <div class="container-xxl py-5">
+        <div class="container px-lg-5">
+            <div class="row g-4" id="blogPosts">
+                <!-- Dynamic blog posts will be inserted here -->
             </div>
         </div>
-
-        <!-- Full Screen Search Modal -->
-        <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content" style="background: rgba(29, 29, 39, 0.7);">
-                    <div class="modal-header border-0">
-                        <button type="button" class="btn bg-white btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center justify-content-center">
-                        <div class="input-group" style="max-width: 600px;">
-                            <input type="text" class="form-control bg-transparent border-light p-3" placeholder="Type search keyword" aria-label="Search">
-                            <button class="btn btn-light px-4"><i class="bi bi-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- About Section -->
-        <div class="container-xxl py-5">
-            <div class="container px-lg-5">
-                <div class="section-title position-relative mb-4 pb-2">
-                    <h6 class="position-relative text-primary ps-4">About Us</h6>
-                </div>
-                <p>We offer multiple services including G2C, financial services, and more...</p>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <footer class="container-fluid bg-primary text-light footer mt-5 pt-5">
-            <div class="container py-5">
-                <p>&copy; <a href="https://cscdigitalindia.in" class="text-white">CSC Digital India</a>, All Rights Reserved.</p>
-            </div>
-        </footer>
     </div>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/blog.js"></script>
 </body>
-
-<script>
-    fetch("https://priyankomanna.pythonanywhere.com/api/data/")
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById("response").innerText = data.message;
-    })
-    .catch(error => console.error("Error:", error));
-</script>
-
 </html>

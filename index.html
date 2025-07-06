@@ -1,187 +1,96 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSC Pulsita || Hasi Kushi Store</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #f5f9ff;
-      color: #333;
-    }
-    header {
-      background-color: #003366;
-      color: white;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    nav a {
-      color: white;
-      margin: 0 1rem;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .hero {
-      background: url('https://source.unsplash.com/1600x600/?india,village,technology') center/cover no-repeat;
-      color: white;
-      padding: 5rem 2rem;
-      text-align: center;
-    }
-    .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-    .cta-buttons button {
-      margin: 0.5rem;
-      padding: 0.8rem 1.5rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 0.5rem;
-      background-color: #007BFF;
-      color: white;
-      cursor: pointer;
-    }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem;
-    }
-    .card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .card img {
-      width: 40px;
-      margin-bottom: 1rem;
-    }
-    .vle-register, .news-section {
-      background: #fff;
-      padding: 3rem 2rem;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-    .vle-register h2, .news-section h2 {
-      text-align: center;
-      color: #003366;
-    }
-    .vle-register ol {
-      padding-left: 1.2rem;
-    }
-    .news-article {
-      background: #f0f4ff;
-      margin: 1.5rem 0;
-      padding: 1.5rem;
-      border-radius: 1rem;
-    }
-    .news-article h3 {
-      margin: 0.5rem 0;
-      color: #002244;
-    }
-    .news-article p {
-      margin: 0.5rem 0 0;
-    }
-    footer {
-      background: #002244;
-      color: white;
-      padding: 2rem;
-      text-align: center;
-      margin-top: 2rem;
-    }
-  </style>
+    <title>CSC Digital India</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Priyanko Manna">
+    <meta name="description" content="CSC Digital India Services – Aadhaar, PAN, Recharge, Online Forms, and More">
+
+    <!-- Bootstrap 5 and Swiper -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="swiper-bundle.min.css">
+    <link rel="stylesheet" href="vendor.css">
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Jost&family=Marcellus&display=swap" rel="stylesheet">
 </head>
-<body>
-<header>
-    <div><strong>CSC Pulsita || Hasi Kushi Stores</strong></div>
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">Servies</a>
-        <a href="#register">Blog</a>
-        <a href="#">Schemes</a>
-        <a href="#news">News</a>
-        <a href="#">Contact Us</a>
-    </nav>
+
+<body class="homepage">
+
+<!-- Preloader -->
+<div class="preloader">
+    <img src="ajax-loader.gif" alt="Loading...">
+</div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="#">CSC Digital India</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto text-uppercase">
+                <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<header class="slideshow fade-in py-5 text-white text-center" style="background: #111;">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Welcome to CSC Digital India</h1>
+        <p class="lead">All Government & Digital Services Under One Roof</p>
+        <a href="#services" class="btn btn-primary mt-3">Explore Services</a>
+    </div>
 </header>
 
-<section class="hero">
-    <h1>ডিজিটাল শক্তিতে গ্রামীণ ভারতকে ক্ষমতায়ন</h1>
-    <p>ডিজিটাল শাসন ও গ্রামীণ উদ্যোগের বিপ্লবে যোগ দিন</p>
-    <div class="cta-buttons">
-        <button>VLE হন</button>
-        <a href="https://digitalseva.csc.gov.in/"><button>পরিষেবাগুলি দেখুন</button></a>
+<!-- Services -->
+<section id="services" class="py-5 bg-light">
+    <div class="container text-center">
+        <h2 class="mb-4">Our Services</h2>
+        <div class="row g-4">
+            <div class="col-md-4"><div class="p-4 border bg-white">Aadhaar Enrollment & Update</div></div>
+            <div class="col-md-4"><div class="p-4 border bg-white">PAN Card Application</div></div>
+            <div class="col-md-4"><div class="p-4 border bg-white">Online Form Fill-up</div></div>
+            <div class="col-md-4"><div class="p-4 border bg-white">Mobile & DTH Recharge</div></div>
+            <div class="col-md-4"><div class="p-4 border bg-white">Xerox & Lamination</div></div>
+            <div class="col-md-4"><div class="p-4 border bg-white">Government Schemes</div></div>
+        </div>
     </div>
 </section>
 
-<section class="cards">
-    <div class="card">
-        <img src="https://img.icons8.com/ios-filled/50/000000/services.png" alt="Service">
-        <h3>ই-গভর্ন্যান্স</h3>
-        <p>সরকারি পরিষেবা ও সার্টিফিকেট সহজেই পাওয়া যায়।</p>
-    </div>
-    <div class="card">
-        <img src="https://img.icons8.com/ios-filled/50/000000/rupee.png" alt="Finance">
-        <h3>আর্থিক পরিষেবা</h3>
-        <p>ব্যাংকিং, বীমা ও পেমেন্ট পরিষেবা সবার জন্য।</p>
-    </div>
-    <div class="card">
-        <img src="https://img.icons8.com/ios-filled/50/000000/graduation-cap.png" alt="Education">
-        <h3>শিক্ষা</h3>
-        <p>ডিজিটাল সাক্ষরতা ও কর্মমুখী প্রশিক্ষণ।</p>
-    </div>
-    <div class="card">
-        <img src="https://img.icons8.com/ios-filled/50/000000/hospital.png" alt="Health">
-        <h3>স্বাস্থ্য</h3>
-        <p>টেলিমেডিসিন ও স্বাস্থ্যসেবা গ্রামে গ্রামে।</p>
-    </div>
-    <div class="card">
-        <img src="https://img.icons8.com/ios-filled/50/000000/tractor.png" alt="Agriculture">
-        <h3>কৃষি</h3>
-        <p>চাষিদের জন্য ডিজিটাল সহায়তা ও সমর্থন।</p>
+<!-- About Section -->
+<section id="about" class="py-5 text-center">
+    <div class="container">
+        <h2 class="mb-4">About Us</h2>
+        <p>We are a government-registered CSC center offering verified digital services to the public with efficiency and transparency.</p>
     </div>
 </section>
 
-<section class="vle-register" id="register">
-    <h2>VLE হিসাবে নিবন্ধনের ধাপসমূহ</h2>
-    <ol>
-        <li>অফিশিয়াল CSC পোর্টালে যান: <a href="https://register.csc.gov.in">register.csc.gov.in</a></li>
-        <li>"New Registration" এ ক্লিক করুন।</li>
-        <li>আপনার আধার নম্বর প্রদান করুন ও OTP যাচাইকরণ করুন।</li>
-        <li>ব্যক্তিগত ও যোগাযোগের বিবরণ পূরণ করুন।</li>
-        <li>প্রয়োজনীয় নথিপত্র আপলোড করুন (ছবি, ঠিকানার প্রমাণ ইত্যাদি)।</li>
-        <li>ফর্ম সাবমিট করুন এবং ট্র্যাকিং নম্বর সংগ্রহ করুন।</li>
-        <li>CSC কর্তৃপক্ষ আপনার আবেদন পর্যালোচনা করবে এবং অনুমোদন জানাবে।</li>
-    </ol>
-</section>
-
-<section class="news-section" id="news">
-    <h2>সাম্প্রতিক খবর ও আপডেট</h2>
-    <div class="news-article">
-        <h3>CSC-এর নতুন পরিষেবা চালু</h3>
-        <p>গ্রামীণ অঞ্চলে ডিজিটাল স্বাক্ষর ইস্যু করার নতুন সুবিধা CSC-এর মাধ্যমে চালু হয়েছে।</p>
-    </div>
-    <div class="news-article">
-        <h3>নারীদের জন্য বিশেষ প্রশিক্ষণ প্রোগ্রাম</h3>
-        <p>CSC নারীদের ডিজিটাল প্রশিক্ষণের জন্য একটি নতুন উদ্যোগ গ্রহণ করেছে যা আগামী মাস থেকে শুরু হবে।</p>
-    </div>
-    <div class="news-article">
-        <h3>VLE কনফারেন্স ২০২৫</h3>
-        <p>সারা ভারত থেকে VLE-রা অংশগ্রহণ করবেন এই বার্ষিক সম্মেলনে যা দিল্লিতে অনুষ্ঠিত হবে।</p>
+<!-- Contact -->
+<section id="contact" class="py-5 bg-light">
+    <div class="container text-center">
+        <h2>Contact Us</h2>
+        <p>Email: support@cscdigitalindia.in | Phone: +91-XXXXXXXXXX</p>
+        <p>Address: [Your Address Here]</p>
     </div>
 </section>
 
-<footer>
-    <p>&copy; ২০২৫ সিএসসি ডিজিটাল ইন্ডিয়া। সর্বস্বত্ব সংরক্ষিত।</p>
+<!-- Footer -->
+<footer class="py-4 text-center bg-dark text-white">
+    <p class="mb-0">© 2025 CSC Digital India. Powered by TemplatesJungle (Attribution Retained).</p>
 </footer>
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

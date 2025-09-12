@@ -1,57 +1,81 @@
-// js/main.js
-// এখানে posts তালিকা ম্যানুয়ালি আপডেট করবে যখন নতুন পোস্ট যোগ করবে
+// js/main.js (replace existing)
+// Robust blog loader with helpful error messages
+
+// --- EDIT THIS LIST: add your markdown files here ---
 const posts = [
-  { file: "2025-09-13-first-post.md", title: "আমার প্রথম ব্লগ পোস্ট", date: "2025-09-13" }
-  // নতুন পোস্ট হলে এখানে আরেকটি আইটেম যোগ করো:
-  // , { file: "2025-09-14-another.md", title: "দ্বিতীয় পোস্ট", date: "2025-09-14" }
+  { file: "2025-09-13-first-post.md", title: "Welcome Post", date: "2025-09-13" },
+  // { file: "demo.md", title: "ডেমো পোস্ট", date: "2025-09-14" }
 ];
+
+function showMessage(html) {
+  const list = document.getElementById('blog-list');
+  if (!list) return;
+  const col = document.createElement('div');
+  col.className = 'col-12';
+  col.innerHTML = `<div class="p-4 border bg-white text-danger">${html}</div>`;
+  list.appendChild(col);
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
 
 async function loadPosts() {
   const list = document.getElementById('blog-list');
-  if (!list) return;
+  if (!list) {
+    console.error('No #blog-list element found in DOM.');
+    return;
+  }
+  list.innerHTML = ''; // clear
 
-  // clear
-  list.innerHTML = '';
+  // If opened via file:// protocol, give explicit instruction
+  if (location.protocol === 'file:') {
+    showMessage('Error: You opened the page with <code>file://</code>. Fetching local .md files is blocked by browser security. Run a local HTTP server (e.g. <code>python -m http.server 8000</code>) and open <code>http://localhost:8000</code>.');
+    console.warn('Page opened with file:// — fetch will likely fail. Start a local server.');
+    // continue to attempt fetches (but they will usually fail)
+  }
 
-  for (let p of posts) {
+  for (const p of posts) {
+    const col = document.createElement('div');
+    col.className = 'col-md-6';
+    const card = document.createElement('div');
+    card.className = 'p-4 border bg-white h-100';
+
+    // Basic header
+    card.innerHTML = `
+      <h4 class="mb-2">${escapeHtml(p.title)}</h4>
+      <div class="text-muted small mb-2">${escapeHtml(p.date || '')}</div>
+      <div class="mb-3" id="preview-${escapeHtml(p.file)}">Loading preview...</div>
+      <a class="btn btn-sm btn-primary" href="post.html?file=${encodeURIComponent(p.file)}&title=${encodeURIComponent(p.title)}">Read more</a>
+    `;
+    col.appendChild(card);
+    list.appendChild(col);
+
+    // Try fetch markdown
     try {
       const res = await fetch('posts/' + p.file);
       if (!res.ok) {
-        // যদি পোস্ট না মিলে, skip করো
-        console.warn('Missing post file:', p.file);
+        const msg = `Error: Failed to load <code>posts/${p.file}</code> — server returned ${res.status} ${res.statusText}.`;
+        console.warn(msg);
+        const preview = card.querySelector('#preview-' + p.file);
+        if (preview) preview.innerHTML = `<span class="text-danger">${msg}</span>`;
         continue;
       }
       const md = await res.text();
-      // preview: প্রথম 250 ক্যারেক্টার টেক্সট (strip markdown)
-      const preview = md.replace(/[#*_`\[\]\(\)>-]/g, '').trim().substring(0, 250);
 
-      const col = document.createElement('div');
-      col.className = 'col-md-6';
-
-      const card = document.createElement('div');
-      card.className = 'p-4 border bg-white h-100';
-
-      card.innerHTML = `
-        <h4 class="mb-2">${escapeHtml(p.title)}</h4>
-        <div class="text-muted small mb-2">${p.date}</div>
-        <p class="mb-3">${escapeHtml(preview)}...</p>
-        <a class="btn btn-sm btn-primary" href="post.html?file=${encodeURIComponent(p.file)}&title=${encodeURIComponent(p.title)}">Read more</a>
-      `;
-
-      col.appendChild(card);
-      list.appendChild(col);
+      // create a short preview by removing markdown markers and trimming
+      const previewText = md.replace(/[#*_`\[\]\(\)>-]/g, '').trim().substring(0, 300);
+      const preview = card.querySelector('#preview-' + p.file);
+      if (preview) preview.innerHTML = escapeHtml(previewText) + (previewText.length >= 300 ? '...' : '');
 
     } catch (err) {
-      console.error('Error loading post', p.file, err);
+      console.error('Network/fetch error for', p.file, err);
+      const preview = card.querySelector('#preview-' + p.file);
+      if (preview) {
+        preview.innerHTML = `<span class="text-danger">Error: NetworkError when attempting to fetch resource. ${escapeHtml(String(err.message || err))}</span>`;
+      }
     }
   }
-}
-
-// small helper to avoid XSS in title/preview (these are from local trusted files but safe)
-function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, function(m) {
-    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
-  });
 }
 
 document.addEventListener('DOMContentLoaded', loadPosts);

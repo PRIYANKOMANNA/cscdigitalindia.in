@@ -1,8 +1,8 @@
 // js/main.js - safer version
 
 const posts = [
-  { file: "nepal.md", title: "Welcome Post", date: "2025-09-13" },
-  // add more: { file: "2025-09-14-other.md", title: "Another", date: "2025-09-14" }
+  { file: "demo.md", title: "Welcome Post", date: "2025-09-13" },
+  { file: "nepal.md", title: "Nepal", date: "2025-09-14" }
 ];
 
 function showMessage(html) {

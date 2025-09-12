@@ -1,0 +1,17 @@
+/* css/style.css */
+body {
+  font-family: "Jost", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: #f8f9fa;
+  color: #222;
+}
+
+.hero {
+  background: linear-gradient(90deg, #0d6efd 0%, #6c5ce7 100%);
+  padding: 60px 0;
+}
+
+#blog .card {
+  min-height: 180px;
+}
+
+a { text-decoration: none; }

@@ -3,7 +3,7 @@
 
 // --- EDIT THIS LIST: add your markdown files here ---
 const posts = [
-  { file: "2025-09-13-first-post.md", title: "Welcome Post", date: "2025-09-13" },
+  { file: "nepal.md", title: "Welcome Post", date: "2025-09-13" },
   // { file: "2025-09-13-first-post", title: "ডেমো পোস্ট", date: "2025-09-14" }
 ];
 

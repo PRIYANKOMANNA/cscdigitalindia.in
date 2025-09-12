@@ -1,10 +1,8 @@
-// js/main.js (replace existing)
-// Robust blog loader with helpful error messages
+// js/main.js - safer version
 
-// --- EDIT THIS LIST: add your markdown files here ---
 const posts = [
   { file: "nepal.md", title: "Welcome Post", date: "2025-09-13" },
-  // { file: "2025-09-13-first-post", title: "ডেমো পোস্ট", date: "2025-09-14" }
+  // add more: { file: "2025-09-14-other.md", title: "Another", date: "2025-09-14" }
 ];
 
 function showMessage(html) {
@@ -14,6 +12,11 @@ function showMessage(html) {
   col.className = 'col-12';
   col.innerHTML = `<div class="p-4 border bg-white text-danger">${html}</div>`;
   list.appendChild(col);
+}
+
+function safeId(name) {
+  // replace anything not alphanumeric, hyphen or underscore with underscore
+  return 'preview-' + String(name).replace(/[^a-z0-9\-_]/gi, '_');
 }
 
 function escapeHtml(s) {
@@ -26,54 +29,50 @@ async function loadPosts() {
     console.error('No #blog-list element found in DOM.');
     return;
   }
-  list.innerHTML = ''; // clear
+  list.innerHTML = '';
 
-  // If opened via file:// protocol, give explicit instruction
   if (location.protocol === 'file:') {
-    showMessage('Error: You opened the page with <code>file://</code>. Fetching local .md files is blocked by browser security. Run a local HTTP server (e.g. <code>python -m http.server 8000</code>) and open <code>http://localhost:8000</code>.');
-    console.warn('Page opened with file:// — fetch will likely fail. Start a local server.');
-    // continue to attempt fetches (but they will usually fail)
+    showMessage('Error: You opened the page with <code>file://</code>. Fetching local .md files is blocked. Run a local server: <code>python -m http.server 8000</code> and open <code>http://localhost:8000</code>.');
+    console.warn('file:// protocol detected — start a local server.');
   }
 
   for (const p of posts) {
     const col = document.createElement('div');
     col.className = 'col-md-6';
+
     const card = document.createElement('div');
     card.className = 'p-4 border bg-white h-100';
 
-    // Basic header
+    const id = safeId(p.file);
+
     card.innerHTML = `
       <h4 class="mb-2">${escapeHtml(p.title)}</h4>
       <div class="text-muted small mb-2">${escapeHtml(p.date || '')}</div>
-      <div class="mb-3" id="preview-${escapeHtml(p.file)}">Loading preview...</div>
+      <div class="mb-3" id="${id}">Loading preview...</div>
       <a class="btn btn-sm btn-primary" href="post.html?file=${encodeURIComponent(p.file)}&title=${encodeURIComponent(p.title)}">Read more</a>
     `;
+
     col.appendChild(card);
     list.appendChild(col);
 
-    // Try fetch markdown
+    // fetch markdown
     try {
       const res = await fetch('posts/' + p.file);
       if (!res.ok) {
-        const msg = `Error: Failed to load <code>posts/${p.file}</code> — server returned ${res.status} ${res.statusText}.`;
+        const msg = `Error: Not found: posts/${p.file} (status ${res.status})`;
         console.warn(msg);
-        const preview = card.querySelector('#preview-' + p.file);
-        if (preview) preview.innerHTML = `<span class="text-danger">${msg}</span>`;
+        const previewElem = document.getElementById(id);
+        if (previewElem) previewElem.innerHTML = `<span class="text-danger">${escapeHtml(msg)}</span>`;
         continue;
       }
       const md = await res.text();
-
-      // create a short preview by removing markdown markers and trimming
       const previewText = md.replace(/[#*_`\[\]\(\)>-]/g, '').trim().substring(0, 300);
-      const preview = card.querySelector('#preview-' + p.file);
-      if (preview) preview.innerHTML = escapeHtml(previewText) + (previewText.length >= 300 ? '...' : '');
-
+      const previewElem = document.getElementById(id);
+      if (previewElem) previewElem.innerHTML = escapeHtml(previewText) + (previewText.length >= 300 ? '...' : '');
     } catch (err) {
-      console.error('Network/fetch error for', p.file, err);
-      const preview = card.querySelector('#preview-' + p.file);
-      if (preview) {
-        preview.innerHTML = `<span class="text-danger">Error: NetworkError when attempting to fetch resource. ${escapeHtml(String(err.message || err))}</span>`;
-      }
+      console.error('Fetch error for', p.file, err);
+      const previewElem = document.getElementById(id);
+      if (previewElem) previewElem.innerHTML = `<span class="text-danger">Network error: ${escapeHtml(String(err.message || err))}</span>`;
     }
   }
 }

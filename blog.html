@@ -1,110 +1,109 @@
-<!DOCTYPE html>
-<html lang="en">
+/* ======================
+blog.html
+====================== */
+
+<!doctype html>
+<html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Piggy Bank Money Saving Hacks</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>CSC Hub — Blog Post</title>
+    <meta name="description" content="CSC Hub blog post">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 0;
-            text-align: center;
-        }
-        main {
-            padding: 20px;
-        }
-        h1, h2 {
-            color: #333;
-        }
-        article {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        ul li {
-            background-color: #f9f9f9;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-        }
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #333;
-            color: #fff;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
+        .card-shadow{ box-shadow: 0 6px 18px rgba(15,23,42,0.08); }
+        .prose-custom h1{ font-size: 1.75rem; }
+        .prose-custom img{ border-radius: 0.5rem; }
     </style>
 </head>
-<body>
-<header>
-    <h1>14 no gali </h1>
-    <p>Electric bill</p>
+<body class="bg-slate-50 text-slate-800 antialiased">
+<header class="max-w-5xl mx-auto p-4 md:p-6 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center card-shadow">
+            <span class="font-semibold text-lg text-sky-600">CSC</span>
+        </div>
+        <div>
+            <div class="text-lg font-semibold">CSC Hub</div>
+            <div class="text-xs text-slate-500">আপনার ডিজিটাল সার্ভিস, পণ্য ও ব্লগ</div>
+        </div>
+    </a>
 </header>
 
-<main>
-
-    <article>
-        <h2>14নং</h2>
-        <p>১৪ নং বিল পেমে্ন্ট এবং কালেকশান এর বিবরণ </p>
-        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/payment.jpeg" style="width: 250px; height: 250px;">
+<main class="max-w-4xl mx-auto px-4 md:px-6">
+    <article id="post" class="bg-white rounded-2xl p-8 card-shadow mt-6 mb-8">
+        <div id="meta" class="text-slate-500 text-sm mb-4"></div>
+        <div id="content" class="prose-custom prose max-w-none"></div>
+        <div id="share" class="mt-6 flex gap-2"></div>
     </article>
 
-    <article>
-        <h2>14নং ইলেকট্রিক বিল পেমেণ্ট এর বিবরণ </h2>
-        <ul>
-            <li><strong>সোনা</strong> ১০০ টাকা</li>
-            <li><strong>বাড়ূ</strong> ১০০ টাকা</li>
-            <li><strong>দেবু </strong> ১০০ টাকা</li>
-            <li><strong>প্রনব</strong> ১০০ টাকা</li>
-            <li><strong>প্রিতম </strong> ৯০ টাকা</li>
-            <li><strong>সামু </strong> ১০০ টাকা</li>
-            <li><strong>বিশাল </strong> ১০০ টাকা</li>
-            <li><strong>সায়ান্তন </strong> ১০০ টাকা</li>
-            <li><strong>আর্চার</strong> ১০০ টাকা</li>
-            <li><strong>প্রদীপ দা</strong> ১০০ টাকা</li>
-            <li><strong>ইয়াজ দা</strong> ১০০ টাকা</li>
-            <li><strong>ঝালু</strong> ৮০  টাকা</li>
-
-
-
-
-
-            <li><strong>মোট </strong> ১০৯০ টাকা</li>
-
-        </ul>
-    </article>
-
-
-
-
-    <article>
-        <h2>Conclusion</h2>
-        <p>Saving money doesn’t need to be complicated. Whether you’re using a piggy bank for spare change or setting specific savings goals, these simple tricks can help you build your savings over time. So, grab a piggy bank, start saving, and watch your money grow!</p>
-    <a href="https://www.amazon.in/dp/B0DNG7K5W4">Buy Here</a>
-    </article>
+    <nav id="nav" class="flex justify-between text-sm mb-12"></nav>
 </main>
 
-<footer>
-    <p>&copy; The Informal. All rights reserved.</p>
-</footer>
+<script>
+    // Utility
+    function qs(name){
+      const params = new URLSearchParams(location.search);
+      return params.get(name);
+    }
+
+    function fetchJSON(url){ return fetch(url,{cache:'no-store'}).then(r=>{ if(!r.ok) throw new Error('json error'); return r.json() }); }
+
+    async function renderPost(){
+      const slug = qs('post');
+      if(!slug){ document.getElementById('content').innerHTML = '<div class="p-6 text-center text-red-600">No post specified</div>'; return; }
+      try{
+        const posts = await fetchJSON('posts/posts.json');
+        const post = posts.find(p => (p.slug || p.file.replace(/\.md$/,'')).toString() === slug);
+        if(!post) throw new Error('Post not found in posts.json');
+        document.title = post.title + ' — CSC Hub';
+        document.getElementById('meta').textContent = `${post.author || 'CSC Hub'} • ${dayjs(post.date).format('YYYY-MM-DD')}`;
+        // fetch markdown
+        const mdRes = await fetch('posts/' + (post.slug || post.file.replace(/\.md$/,'')) + '.md',{cache:'no-store'});
+        if(!mdRes.ok) throw new Error('Could not load markdown');
+        const mdText = await mdRes.text();
+        // render
+        const html = marked.parse(mdText, {mangle: false, headerIds: true});
+        document.getElementById('content').innerHTML = html;
+        // highlight code
+        document.querySelectorAll('pre code').forEach((el)=>{ hljs.highlightElement(el); });
+
+        renderShareButtons(post);
+        renderNav(posts, post);
+      }catch(err){
+        console.error(err);
+        document.getElementById('content').innerHTML = '<div class="p-6 text-center text-red-600">Post could not be loaded — check posts/posts.json and posts/*.md</div>';
+      }
+    }
+
+    function renderShareButtons(post){
+      const container = document.getElementById('share');
+      const url = encodeURIComponent(location.href);
+      const title = encodeURIComponent(post.title);
+      container.innerHTML = `
+        <a class="px-3 py-2 bg-blue-600 text-white rounded-md" href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank">Share FB</a>
+        <a class="px-3 py-2 bg-sky-500 text-white rounded-md" href="https://twitter.com/intent/tweet?url=${url}&text=${title}" target="_blank">Tweet</a>
+        <a class="px-3 py-2 bg-emerald-500 text-white rounded-md" href="https://wa.me/?text=${title}%20${url}" target="_blank">WhatsApp</a>
+      `;
+    }
+
+    function renderNav(posts, current){
+      // find prev/next
+      const sorted = posts.slice().sort((a,b)=> new Date(b.date)-new Date(a.date));
+      const idx = sorted.findIndex(p=> (p.slug||p.file.replace(/\.md$/,'')) === (current.slug||current.file.replace(/\.md$/,'')) );
+      const prev = sorted[idx+1];
+      const next = sorted[idx-1];
+      const nav = document.getElementById('nav');
+      nav.innerHTML = `
+        <div>${prev? `<a href="blog.html?post=${encodeURIComponent(prev.slug || prev.file.replace(/\.md$/,''))}" class="text-slate-600 hover:text-sky-600">← ${prev.title}</a>` : ''}</div>
+        <div>${next? `<a href="blog.html?post=${encodeURIComponent(next.slug || next.file.replace(/\.md$/,''))}" class="text-slate-600 hover:text-sky-600">${next.title} →</a>` : ''}</div>
+      `;
+    }
+
+    renderPost();
+</script>
 </body>
 </html>

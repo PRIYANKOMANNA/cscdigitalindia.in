@@ -1,146 +1,117 @@
-<!--
-File collection: copy each file into your project exactly as named.
-Place the `posts/` folder in the same directory as `index.html` and `blog.html`.
-
-Files included below:
-- index.html
-- blog.html
-- posts/posts.json
-- posts/welcome-post.md (sample)
-
-Dependencies are loaded via CDN (Tailwind, marked.js, highlight.js).
-This system uses posts/posts.json to list posts and posts/<slug>.md markdown files for content.
--->
-
-/* ======================
-index.html
-====================== */
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CSC Hub — Professional Store & Blog</title>
-    <meta name="description" content="CSC Hub — আপনার ডিজিটাল সার্ভিস, পণ্য ও ব্লগ">
+    <meta name="author" content="Priyanko Manna">
+    <meta name="description" content="CSC Digital Services, Shop & Blog">
 
-    <!-- Tailwind CDN -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Marked (Markdown parser) for previews if needed -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <!-- dayjs for friendly dates -->
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
     <style>
-        /* small visual polish */
-        .card-shadow{ box-shadow: 0 6px 18px rgba(15,23,42,0.08); }
-        .gradient-hero{ background: linear-gradient(90deg,#0ea5a4 0%,#3b82f6 100%);}
-        .prose-custom p{ margin-bottom: 0.9rem; }
+        body {
+          font-family: 'Rajdhani', sans-serif;
+          background: radial-gradient(circle at center, #0f2027, #203a43, #2c5364);
+          color: #f0f0f0;
+        }
+        .glow-card {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(0, 255, 255, 0.2);
+          backdrop-filter: blur(8px);
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .glow-card:hover {
+          transform: translateY(-5px) scale(1.02);
+          box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        .glow-btn {
+          background: linear-gradient(45deg, #00ffe7, #0077ff);
+          color: #fff;
+          border-radius: 9999px;
+          padding: 0.75rem 1.5rem;
+          font-weight: bold;
+          transition: 0.3s;
+        }
+        .glow-btn:hover {
+          background: linear-gradient(45deg, #ff00f7, #00ffe7);
+          box-shadow: 0 0 15px #00ffe7;
+        }
+        header {
+          font-family: 'Orbitron', sans-serif;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased">
 
-<!-- NAV -->
-<header class="max-w-5xl mx-auto p-4 md:p-6 flex items-center justify-between">
-    <a href="index.html" class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center card-shadow">
-            <span class="font-semibold text-lg text-sky-600">CSC</span>
-        </div>
-        <div>
-            <div class="text-lg font-semibold">CSC Hub</div>
-            <div class="text-xs text-slate-500">আপনার ডিজিটাল সার্ভিস, পণ্য ও ব্লগ</div>
-        </div>
-    </a>
-    <nav class="hidden md:flex gap-4 items-center text-sm">
-        <a href="#" class="text-slate-600 hover:text-slate-900">Shop</a>
-        <a href="index.html" class="text-slate-600 hover:text-slate-900">Blog</a>
-        <a href="#contact" class="text-slate-600 hover:text-slate-900">Contact</a>
-    </nav>
+<body class="min-h-screen flex flex-col">
+
+<!-- Header -->
+<header class="text-center py-6">
+    <h1 class="text-4xl font-bold text-cyan-400">CSC Hub</h1>
+    <p class="text-gray-300 text-lg">আপনার ডিজিটাল সার্ভিস, পণ্য ও ব্লগ — সব এক জায়গায়</p>
+    <div class="mt-4 flex justify-center gap-4">
+        <a href="#shop" class="glow-btn">🛒 দোকান দেখুন</a>
+        <a href="#blog" class="glow-btn">📝 ব্লগ পড়ুন</a>
+    </div>
 </header>
 
-<!-- HERO -->
-<main class="max-w-5xl mx-auto px-4 md:px-6">
-    <section class="rounded-2xl overflow-hidden gradient-hero text-white p-8 md:p-12 mb-8">
-        <h1 class="text-3xl md:text-4xl font-extrabold">CSC Hub — Professional Store & Blog</h1>
-        <p class="mt-2 text-slate-100/90 max-w-2xl">প্রোডাক্ট বিক্রি করুন, ভিডিও টিউটোরিয়াল শেয়ার করুন এবং ব্লগ পোস্ট লেখুন — সব এক জায়গায়। প্রতিদিন নতুন পোস্ট পাবলিশ করুন।</p>
-    </section>
+<!-- Services -->
+<section id="services" class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="glow-card p-4 rounded-2xl">
+        <h2 class="text-xl text-cyan-300">Aadhaar</h2>
+        <p>Enrollment & Update</p>
+    </div>
+    <div class="glow-card p-4 rounded-2xl">
+        <h2 class="text-xl text-cyan-300">PAN</h2>
+        <p>Card Application</p>
+    </div>
+    <div class="glow-card p-4 rounded-2xl">
+        <h2 class="text-xl text-cyan-300">Recharge</h2>
+        <p>Mobile & DTH</p>
+    </div>
+</section>
 
-    <!-- Latest posts list -->
-    <section>
-        <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-semibold">Latest Blog Posts</h2>
-            <div class="text-sm text-slate-500">Updated dynamically from posts/posts.json</div>
+<!-- Shop -->
+<section id="shop" class="p-6">
+    <h2 class="text-2xl mb-4 text-purple-300">🛍️ Shop Products</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glow-card p-4 rounded-2xl">
+            <h3 class="text-lg">Aadhaar Form Bundle</h3>
+            <p class="text-sm">₹49</p>
+            <button class="glow-btn mt-2">Add</button>
         </div>
-
-        <div id="post-list" class="grid gap-4">
-            <!-- JS will inject cards here -->
+        <div class="glow-card p-4 rounded-2xl">
+            <h3 class="text-lg">PAN Application Kit</h3>
+            <p class="text-sm">₹99</p>
+            <button class="glow-btn mt-2">Add</button>
         </div>
-
-    </section>
-
-    <!-- Contact & Footer -->
-    <footer id="contact" class="mt-12 mb-12 text-sm text-slate-600">
-        <div class="border-t pt-6 flex flex-col md:flex-row justify-between">
-            <div>
-                <div class="font-semibold">Contact</div>
-                <div class="mt-1">Email: mtpl.kolaghat@gmail.com | Phone: +91-8967744210</div>
-                <div class="mt-1">Address: Kolaghat, West Bengal 721154</div>
-            </div>
-            <div class="mt-4 md:mt-0 text-right">© 2025 CSC Hub — Powered by খোলাপাতা</div>
+        <div class="glow-card p-4 rounded-2xl">
+            <h3 class="text-lg">Xerox Pack (50 pages)</h3>
+            <p class="text-sm">₹120</p>
+            <button class="glow-btn mt-2">Add</button>
         </div>
-    </footer>
+    </div>
+</section>
 
-</main>
+<!-- Blog -->
+<section id="blog" class="p-6">
+    <h2 class="text-2xl mb-4 text-green-300">📡 Latest Blog Posts</h2>
+    <div class="glow-card p-4 rounded-2xl">
+        <h3 class="text-lg">Welcome Post — 2025-09-13</h3>
+        <p>এটা আমার প্রথম টেস্ট পোস্ট। CSC Hub ব্লগ সঠিকভাবে কাজ করছে কি না সেটা টেস্ট করার জন্য লিখলাম।</p>
+    </div>
+</section>
 
-<script>
-    // Fetch posts list and render
-    async function loadPosts(){
-      try{
-        const res = await fetch('posts/posts.json',{cache:'no-store'});
-        if(!res.ok) throw new Error('Could not load posts list');
-        const posts = await res.json();
-        const container = document.getElementById('post-list');
-        // sort by date desc
-        posts.sort((a,b)=> new Date(b.date) - new Date(a.date));
-        posts.forEach(p=>{
-          const slug = p.slug || p.file.replace(/\.md$/,'');
-          const card = document.createElement('article');
-          card.className = 'bg-white p-4 rounded-xl card-shadow flex flex-col md:flex-row gap-4 items-stretch';
+<!-- Contact -->
+<footer class="mt-auto p-6 text-center border-t border-cyan-700">
+    <p>📧 mtpl.kolaghat@gmail.com | 📞 +91-8967744210</p>
+    <p>📍 Kolaghat, West Bengal 721154</p>
+    <p class="text-gray-500 mt-2">© 2025 CSC Hub — Powered by খোলাপাতা</p>
+</footer>
 
-          const left = document.createElement('div');
-          left.className = 'flex-1';
-          left.innerHTML = `
-            <a href="blog.html?post=${encodeURIComponent(slug)}" class="text-lg font-semibold text-slate-900 hover:text-sky-600 block">${escapeHtml(p.title)}</a>
-            <div class="text-xs text-slate-500 mt-1">${formatDate(p.date)} • ${escapeHtml(p.excerpt || '')}</div>
-          `;
-
-          const right = document.createElement('div');
-          right.className = 'text-right md:text-left md:w-36 flex md:flex-col items-center justify-center gap-2';
-          right.innerHTML = `
-            <div class="text-sm font-medium text-sky-600">${p.price? '₹'+p.price : ''}</div>
-            <a href="blog.html?post=${encodeURIComponent(slug)}" class="inline-block mt-2 md:mt-4 bg-sky-600 text-white px-3 py-2 rounded-md text-sm">Read</a>
-          `;
-
-          card.appendChild(left);
-          card.appendChild(right);
-          container.appendChild(card);
-        });
-      }catch(err){
-        console.error(err);
-        document.getElementById('post-list').innerHTML = '<div class="p-6 bg-white rounded-xl card-shadow text-red-600">রেকর্ড লোড করা যায়নি। posts/posts.json চেক করুন।</div>';
-      }
-    }
-
-    function formatDate(d){
-      try{ return dayjs(d).format('YYYY-MM-DD'); }catch(e){ return d; }
-    }
-    function escapeHtml(s){ if(!s) return ''; return s.replace(/[&<>\"]+/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]||c)); }
-
-    loadPosts();
-</script>
 </body>
 </html>
-
-
-

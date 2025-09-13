@@ -1,30 +1,20 @@
 <!DOCTYPE html>
-<script>
-    window.sitePosts = [
-      {
-        file: "posts/demo.md",
-        title: "স্বাগতম — আমাদের নতুন ব্লগ",
-        date: "2025-09-13"
-      },
-      {
-        file: "posts/nepal.md",
-        title: "ডিজিটাল সার্ভিস নেওয়ার সহজ উপায়",
-        date: "2025-09-10"
-      },
-      {
-        file: "posts/welcome-post.md",
-        title: "জেরক্স বনাম প্রিন্ট — কোনটা বেছে নেবেন?",
-        date: "2025-09-07"
-      }
-    ];
-</script>
 <html lang="bn">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="author" content="Priyanko Manna" />
+    <meta name="description" content="পুলসিটা হাঁসি খুশি — আপনার ডিজিটাল সার্ভিস, পণ্য ও ব্লগ" />
     <title>The Informal || Khola Pata || Hasi Kushi Store</title>
+
+    <!-- Fonts & Tailwind CDN -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Marked (markdown parser) + DOMPurify (sanitize) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
+
     <style>
         :root{--neon-cyan: #00ffe7;--neon-mag: #ff00f7;--card-bg: rgba(255,255,255,0.03);}
         body{font-family: 'Rajdhani', sans-serif;background: radial-gradient(circle at 10% 10%, #071026 0%, #081827 20%, #071a2b 45%, #081a29 100%);color: #e6f7ff;-webkit-font-smoothing:antialiased;}
@@ -40,82 +30,101 @@
         .post-body code{background: rgba(255,255,255,0.03);padding: 2px 6px;border-radius:6px;color:#f0f0f0;}
         .nebula {position: fixed; inset:0; z-index:-1; pointer-events:none;background-image:radial-gradient(circle at 20% 10%, rgba(255,0,200,0.06) 0 8%, transparent 20%),radial-gradient(circle at 80% 80%, rgba(0,200,255,0.04) 0 12%, transparent 30%),radial-gradient(circle at 50% 40%, rgba(100,80,255,0.03) 0 6%, transparent 16%);mix-blend-mode: screen;filter: blur(30px) saturate(120%);opacity: 0.9;}
         html.dark body{background: radial-gradient(circle at 10% 10%, #070d18 0%, #081018 20%, #07131b 45%, #08121a 100%);color: #bbf7d0;}
+        /* small responsive tweaks for reader */
+        @media (max-width: 640px){
+          .post-body h1{font-size:1.25rem;}
+        }
     </style>
 </head>
+
+<!-- sitePosts should be available before app script; you can place it in a separate file or inline -->
+<script>
+    window.sitePosts = [
+      { file: "posts/demo.md", title: "স্বাগতম — আমাদের নতুন ব্লগ", date: "2025-09-13" },
+      { file: "posts/nepal.md", title: "ডিজিটাল সার্ভিস নেওয়ার সহজ উপায়", date: "2025-09-10" },
+      { file: "posts/welcome-post.md", title: "জেরক্স বনাম প্রিন্ট — কোনটা বেছে নেবেন?", date: "2025-09-07" }
+    ];
+</script>
+
 <body class="min-h-screen flex flex-col">
 
 <div class="nebula"></div>
 
 <header class="text-center py-8 px-4">
-    <h1 class="text-4xl font-bold tracking-wider text-cyan-200">পুলসিটা হাঁসি খুশি জেরক্স </h1>
+    <h1 class="text-4xl font-bold tracking-wider text-cyan-200">পুলসিটা হাঁসি খুশি জেরক্স</h1>
     <p class="text-gray-300 text-lg mt-1">আপনার ডিজিটাল সার্ভিস, পণ্য ও ব্লগ — সব এক জায়গায়</p>
     <div class="mt-5 flex justify-center gap-4">
         <a href="#shop" class="glow-btn">🛒 দোকান</a>
         <a href="#blog" class="glow-btn">📝 ব্লগ</a>
-        <button id="themeToggle" class="glow-btn ml-2" type="button">🌗 থিম</button>
+        <button id="themeToggle" class="glow-btn ml-2" type="button" aria-pressed="false">🌗 থিম</button>
     </div>
 </header>
 
-<section id="services" class="p-6 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="glow-card p-5 rounded-2xl">
-        <h2 class="text-xl text-cyan-300">Aadhaar</h2>
-        <p class="text-sm text-gray-300">Enrollment & Update</p>
-    </div>
-    <div class="glow-card p-5 rounded-2xl">
-        <h2 class="text-xl text-cyan-300">PAN</h2>
-        <p class="text-sm text-gray-300">Card Application</p>
-    </div>
-    <div class="glow-card p-5 rounded-2xl">
-        <h2 class="text-xl text-cyan-300">Recharge</h2>
-        <p class="text-sm text-gray-300">Mobile & DTH</p>
-    </div>
-</section>
+<main class="flex-1">
+    <section id="services" class="p-6 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glow-card p-5 rounded-2xl" role="article" aria-label="Aadhaar service">
+            <h2 class="text-xl text-cyan-300">Aadhaar</h2>
+            <p class="text-sm text-gray-300">Enrollment & Update</p>
+        </div>
+        <div class="glow-card p-5 rounded-2xl" role="article" aria-label="PAN service">
+            <h2 class="text-xl text-cyan-300">PAN</h2>
+            <p class="text-sm text-gray-300">Card Application</p>
+        </div>
+        <div class="glow-card p-5 rounded-2xl" role="article" aria-label="Recharge">
+            <h2 class="text-xl text-cyan-300">Recharge</h2>
+            <p class="text-sm text-gray-300">Mobile & DTH</p>
+        </div>
+    </section>
 
-<section id="shop" class="p-6 max-w-6xl mx-auto mt-4">
-    <h2 class="text-2xl mb-4 text-purple-300">🛍️ Shop Products</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="glow-card p-4 rounded-2xl">
-            <h3 class="text-lg">Aadhaar Form Bundle</h3>
-            <p class="text-sm text-gray-300">Printed Aadhaar forms + guidance</p>
-            <div class="mt-3 flex items-center justify-between">
-                <div class="text-cyan-200 font-bold">₹49</div>
-                <button class="glow-btn">Add</button>
+    <section id="shop" class="p-6 max-w-6xl mx-auto mt-4">
+        <h2 class="text-2xl mb-4 text-purple-300">🛍️ Shop Products</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glow-card p-4 rounded-2xl">
+                <h3 class="text-lg">Aadhaar Form Bundle</h3>
+                <p class="text-sm text-gray-300">Printed Aadhaar forms + guidance</p>
+                <div class="mt-3 flex items-center justify-between">
+                    <div class="text-cyan-200 font-bold">₹49</div>
+                    <button class="glow-btn">Add</button>
+                </div>
+            </div>
+            <div class="glow-card p-4 rounded-2xl">
+                <h3 class="text-lg">PAN Application Kit</h3>
+                <p class="text-sm text-gray-300">PAN form + scanning service</p>
+                <div class="mt-3 flex items-center justify-between">
+                    <div class="text-cyan-200 font-bold">₹99</div>
+                    <button class="glow-btn">Add</button>
+                </div>
+            </div>
+            <div class="glow-card p-4 rounded-2xl">
+                <h3 class="text-lg">Xerox Pack (50 pages)</h3>
+                <p class="text-sm text-gray-300">High quality mono xerox</p>
+                <div class="mt-3 flex items-center justify-between">
+                    <div class="text-cyan-200 font-bold">₹120</div>
+                    <button class="glow-btn">Add</button>
+                </div>
             </div>
         </div>
-        <div class="glow-card p-4 rounded-2xl">
-            <h3 class="text-lg">PAN Application Kit</h3>
-            <p class="text-sm text-gray-300">PAN form + scanning service</p>
-            <div class="mt-3 flex items-center justify-between">
-                <div class="text-cyan-200 font-bold">₹99</div>
-                <button class="glow-btn">Add</button>
+    </section>
+
+    <section id="blog" class="p-6 max-w-6xl mx-auto mt-8">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl text-green-300">📡 Latest Blog Posts</h2>
+            <div class="flex gap-3 items-center">
+                <label for="search" class="sr-only">Search posts</label>
+                <input id="search" class="px-3 py-2 rounded-lg bg-transparent border border-cyan-700 text-sm text-gray-200" placeholder="Search posts..." />
+                <label for="sort" class="sr-only">Sort posts</label>
+                <select id="sort" class="px-3 py-2 rounded-lg bg-transparent border border-cyan-700 text-sm text-gray-200">
+                    <option value="new">Newest first</option>
+                    <option value="old">Oldest first</option>
+                </select>
             </div>
         </div>
-        <div class="glow-card p-4 rounded-2xl">
-            <h3 class="text-lg">Xerox Pack (50 pages)</h3>
-            <p class="text-sm text-gray-300">High quality mono xerox</p>
-            <div class="mt-3 flex items-center justify-between">
-                <div class="text-cyan-200 font-bold">₹120</div>
-                <button class="glow-btn">Add</button>
-            </div>
-        </div>
-    </div>
-</section>
+        <div id="postsList" class="grid grid-cols-1 md:grid-cols-2 gap-4" aria-live="polite"></div>
+    </section>
+</main>
 
-<section id="blog" class="p-6 max-w-6xl mx-auto mt-8">
-    <div class="flex items-center justify-between mb-4">
-        <h2 class="text-2xl text-green-300">📡 Latest Blog Posts</h2>
-        <div class="flex gap-3 items-center">
-            <label for="search"></label><input id="search" class="px-3 py-2 rounded-lg bg-transparent border border-cyan-700 text-sm text-gray-200" placeholder="Search posts..." />
-            <label for="sort"></label><select id="sort" class="px-3 py-2 rounded-lg bg-transparent border border-cyan-700 text-sm text-gray-200">
-            <option value="new">Newest first</option>
-            <option value="old">Oldest first</option>
-        </select>
-        </div>
-    </div>
-    <div id="postsList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-</section>
-
-<div id="reader" class="fixed inset-0 z-50 hidden items-center justify-center p-6">
+<!-- Reader modal -->
+<div id="reader" class="fixed inset-0 z-50 hidden items-center justify-center p-6" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="absolute inset-0 reader-backdrop opacity-95" onclick="closeReader()"></div>
     <div class="relative max-w-3xl w-full bg-gradient-to-b from-[#04121b] to-[#03131b] rounded-2xl p-6 glow-card text-gray-100 overflow-auto" style="max-height:90vh;">
         <div class="flex items-start justify-between gap-4">
@@ -132,6 +141,7 @@
         <article id="readerBody" class="post-body prose prose-invert max-w-none"></article>
     </div>
 </div>
+
 <footer class="mt-12 p-6 text-center border-t border-cyan-700">
     <p>📧 <a href="mailto:mtpl.kolaghat@gmail.com" class="text-cyan-200">mtpl.kolaghat@gmail.com</a> | 📞 <a href="tel:+918967744210" class="text-cyan-200">+91-8967744210</a></p>
     <p>📍 Kolaghat, West Bengal 721154</p>
@@ -139,108 +149,125 @@
 </footer>
 
 <script>
-    // Real theme toggle + persistence
-    function applyTheme() {
+    /* -------------------------
+       Utility & theme handling
+       ------------------------- */
+    function applyTheme(){
       let savedTheme = localStorage.getItem("theme");
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-      function setTheme(prefEvent) {
+      function setTheme(prefEvent){
         let theme = savedTheme;
-        if (!theme) {
+        if(!theme){
           theme = (prefEvent ? prefEvent.matches : prefersDark.matches) ? "dark" : "light";
         }
         document.documentElement.classList.toggle("dark", theme === "dark");
         document.documentElement.setAttribute("data-theme", theme);
+        const btn = document.getElementById('themeToggle');
+        if(btn) btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
       }
       setTheme();
       prefersDark.addEventListener("change", setTheme);
     }
-    function toggleTheme() {
+    function toggleTheme(){
       const isDark = document.documentElement.classList.contains("dark");
-      if (isDark) {
+      if(isDark){
         document.documentElement.classList.remove("dark");
         document.documentElement.setAttribute("data-theme", "light");
-        localStorage.setItem("theme", "light");
+        localStorage.setItem("theme","light");
+        document.getElementById('themeToggle')?.setAttribute('aria-pressed','false');
       } else {
         document.documentElement.classList.add("dark");
         document.documentElement.setAttribute("data-theme", "dark");
-        localStorage.setItem("theme", "dark");
+        localStorage.setItem("theme","dark");
+        document.getElementById('themeToggle')?.setAttribute('aria-pressed','true');
       }
     }
-    window.addEventListener('DOMContentLoaded', applyTheme);
-    document.addEventListener('DOMContentLoaded', function () {
-      const themeBtn = document.getElementById('themeToggle');
-      if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
-    });
 
-    // Posts system
-    const _defaultPosts = [
-        { file: "posts/demo.md", title: "Welcome Post", date: "2025-09-13" }
-    ];
-    const POSTS = (function(){
-      if (Array.isArray(window.sitePosts)) return window.sitePosts;
-      if (Array.isArray(window.posts)) return window.posts;
-      return _defaultPosts;
-    })();
+    /* -------------------------
+       Posts system (fetch + render)
+       ------------------------- */
+    const _defaultPosts = [{ file: "posts/demo.md", title: "Welcome Post", date: "2025-09-13" }];
+
+    // prefer window.sitePosts if available
+    const POSTS = Array.isArray(window.sitePosts) ? window.sitePosts : (Array.isArray(window.posts) ? window.posts : _defaultPosts);
+
     async function fetchMarkdown(path){
       try{
-        const res = await fetch(path, {cache: "no-store"});
+        const res = await fetch(path, { cache: "no-store" });
         if(!res.ok) return `# Error\nCould not load ${path} (status ${res.status})`;
         return await res.text();
       } catch(err){
         return `# Error\nNetwork error loading ${path}\n\n${err.message}`;
       }
     }
-    function mdToHtml(md){
-      md = md.replace(/\r\n/g,"\n");
-      md = md.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-      md = md.replace(/``````/g, (m,lang,code) => `<pre><code class="language-${lang}">${code.replace(/</g,"&lt;")}</code></pre>`);
-      md = md.replace(/^###### (.*$)/gim, '<h6>$1</h6>');
-      md = md.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
-      md = md.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
-      md = md.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-      md = md.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-      md = md.replace(/^# (.*$)/gim, '<h1>$1</h1>');
-      md = md.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-      md = md.replace(/\*(.+?)\*/g, '<em>$1</em>');
-      md = md.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
-      md = md.replace(/^\s*[-*] (.+)/gim, '<li>$1</li>');
-      md = md.replace(/(<li>[\s\S]*?<\/li>)/g, (m) => `<ul>${m.replace(/<\/li>\s*<li>/g,"</li><li>")}</ul>`);
-      const blocks = md.split(/\n{2,}/).map(block => {
-        if(/^\s*<(h\d|ul|pre|blockquote)/.test(block) || /^<h\d>/.test(block)) return block;
-        if(/^\s*<li>/.test(block)) return block;
-        return '<p>' + block.replace(/\n/g, '<br/>') + '</p>';
-      });
-      return blocks.join("\n");
+
+    /* safe markdown -> html using marked + DOMPurify */
+    function mdToSanitizedHtml(md){
+      try{
+        const rawHtml = marked.parse(md || "");
+        const clean = DOMPurify.sanitize(rawHtml, {ALLOWED_TAGS: false});
+        return clean;
+      } catch(e){
+        return `<pre>${escapeHtml(String(e.message || e))}</pre>`;
+      }
     }
+
+    function escapeHtml(str){
+      return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    }
+
     function fmtDate(d){
       try{
+        // normalize date-only values
         const dt = new Date(d + "T00:00:00");
         return dt.toLocaleDateString('bn-IN', { year:'numeric', month:'short', day:'numeric' });
-      }catch(e){ return d; }
+      } catch(e){
+        return d;
+      }
     }
+
     async function renderPosts(){
       const container = document.getElementById('postsList');
+      if(!container) return;
       container.innerHTML = '<div class="col-span-full text-gray-400">Loading posts...</div>';
+
+      // fetch all raw markdown in parallel
       const enhanced = await Promise.all(POSTS.map(async p => {
         const raw = await fetchMarkdown(p.file);
-        return { ...p, raw };
+        // keep original object safe
+        return { ...p, raw: raw || "" };
       }));
+
+      // store cache
       window.__postsCache = enhanced;
+
       const searchInput = document.getElementById('search');
       const sortSelect = document.getElementById('sort');
+
       function update(){
-        const q = searchInput.value.trim().toLowerCase();
-        const sort = sortSelect.value;
+        const q = (searchInput?.value || "").trim().toLowerCase();
+        const sort = sortSelect?.value || "new";
         let list = enhanced.slice();
-        if(q) list = list.filter(item => (item.title + " " + item.raw).toLowerCase().includes(q));
-        list.sort((a,b)=> sort==='new' ? new Date(b.date)-new Date(a.date) : new Date(a.date)-new Date(b.date));
-        if(list.length===0){
-          container.innerHTML = '<div class="text-gray-400">No posts found.</div>';
+
+        if(q){
+          list = list.filter(item => {
+            const hay = (item.title + " " + (item.raw || "") ).toLowerCase();
+            return hay.includes(q);
+          });
+        }
+
+        list.sort((a,b) => sort === 'new' ? new Date(b.date) - new Date(a.date) : new Date(a.date) - new Date(b.date));
+
+        if(list.length === 0){
+          container.innerHTML = '<div class="text-gray-400">কোনো পোস্ট মিলল না।</div>';
           return;
         }
+
         container.innerHTML = '';
         list.forEach(item => {
-          const excerpt = item.raw.replace(/\n/g,' ').slice(0,220).replace(/#/g,'');
+          const excerptText = (item.raw || "").replace(/\s+/g,' ').replace(/[#_*`>-\[\]]/g,'').trim();
+          const excerpt = excerptText.slice(0, 220) + (excerptText.length > 220 ? '...' : '');
+
           const card = document.createElement('div');
           card.className = 'glow-card p-4 rounded-2xl cursor-pointer';
           card.innerHTML = `
@@ -248,42 +275,53 @@
               <div>
                 <h3 class="text-lg font-semibold text-cyan-100">${escapeHtml(item.title)}</h3>
                 <div class="text-sm text-gray-400 mt-1">${fmtDate(item.date)}</div>
-                <p class="text-sm text-gray-300 mt-3">${escapeHtml(excerpt)}...</p>
+                <p class="text-sm text-gray-300 mt-3">${escapeHtml(excerpt)}</p>
               </div>
               <div class="flex flex-col items-end gap-2">
-                <button class="glow-btn" data-file="${escapeHtml(item.file)}">Read</button>
+                <button class="glow-btn" data-file="${escapeHtml(item.file)}" aria-label="Read ${escapeHtml(item.title)}">Read</button>
               </div>
             </div>
           `;
-          card.querySelector('button').addEventListener('click', (ev)=>{
+          // button click
+          const btn = card.querySelector('button');
+          btn?.addEventListener('click', (ev)=>{
             ev.stopPropagation();
             openReader(item, true);
           });
+          // whole card click
           card.addEventListener('click', ()=> openReader(item, true));
           container.appendChild(card);
         });
       }
-      searchInput.addEventListener('input', update);
-      sortSelect.addEventListener('change', update);
+
+      searchInput?.addEventListener('input', debounce(update, 200));
+      sortSelect?.addEventListener('change', update);
+
       update();
+
+      // If URL has ?post=... open it
       const urlPost = getUrlPostParam();
       if(urlPost){
         const found = enhanced.find(p => encodeURIComponent(p.file) === urlPost || encodeURIComponent(p.title) === urlPost);
         if(found) openReader(found, false, true);
       }
     }
-    function escapeHtml(str){
-      return String(str).replace(/</g,"&lt;").replace(/>/g,"&gt;");
-    }
+
+    /* URL param helpers */
     function setUrlPostParam(encoded, replace=false){
-      const url = new URL(window.location.href);
-      if(encoded){
-        url.searchParams.set('post', encoded);
-      } else {
-        url.searchParams.delete('post');
-      }
-      if(replace) history.replaceState({post: encoded}, '', url);
-      else history.pushState({post: encoded}, '', url);
+      try{
+        const url = new URL(window.location.href);
+        if(encoded){
+          url.searchParams.set('post', encoded);
+        } else {
+          url.searchParams.delete('post');
+        }
+        if(replace){
+          history.replaceState({post: encoded}, '', url);
+        } else {
+          history.pushState({post: encoded}, '', url);
+        }
+      }catch(e){}
     }
     function getUrlPostParam(){
       try{
@@ -292,14 +330,22 @@
         return p ? p : null;
       }catch(e){ return null; }
     }
+
+    /* Reader open/close */
     function openReader(item, pushUrl=true, replaceOnly=false){
       const reader = document.getElementById('reader');
       document.getElementById('readerTitle').textContent = item.title;
       document.getElementById('readerDate').textContent = fmtDate(item.date);
-      const html = mdToHtml(item.raw);
+
+      // convert markdown -> html (sanitize)
+      const html = mdToSanitizedHtml(item.raw || "");
       document.getElementById('readerBody').innerHTML = html;
-      reader.classList.remove('hidden'); reader.style.display='flex';
+
+      reader.classList.remove('hidden');
+      reader.style.display = 'flex';
+      reader.setAttribute('aria-hidden','false');
       document.body.style.overflow = 'hidden';
+
       const encoded = encodeURIComponent(item.file);
       if(pushUrl){
         setUrlPostParam(encoded, replaceOnly);
@@ -307,9 +353,12 @@
         setUrlPostParam(encoded, true);
       }
     }
+
     function closeReader(pushUrl=true){
       const reader = document.getElementById('reader');
-      reader.classList.add('hidden'); reader.style.display='none';
+      reader.classList.add('hidden');
+      reader.style.display = 'none';
+      reader.setAttribute('aria-hidden','true');
       document.body.style.overflow = '';
       if(pushUrl){
         setUrlPostParam('', false);
@@ -317,29 +366,52 @@
         setUrlPostParam('', true);
       }
     }
+
+    /* popstate -> open/close based on param */
     window.addEventListener('popstate', (ev) => {
       const p = getUrlPostParam();
+      const cached = window.__postsCache || [];
       if(p){
-        const cached = window.__postsCache || [];
         const found = cached.find(x => encodeURIComponent(x.file) === p || encodeURIComponent(x.title) === p);
         if(found){
           openReader(found, false, true);
           return;
         }
-        try {
+        try{
           const decoded = decodeURIComponent(p);
-          const match = cached.find(x => x.file === decoded);
+          const match = cached.find(x => x.file === decoded || x.title === decoded);
           if(match) openReader(match, false, true);
         } catch(e){}
       } else {
         const reader = document.getElementById('reader');
-        if(!reader.classList.contains('hidden')) closeReader(false);
+        if(reader && !reader.classList.contains('hidden')) closeReader(false);
       }
     });
-    document.addEventListener('DOMContentLoaded', ()=> {
+
+    /* small helper: debounce */
+    function debounce(fn, wait){
+      let t;
+      return function(...args){
+        clearTimeout(t);
+        t = setTimeout(()=> fn.apply(this,args), wait);
+      };
+    }
+
+    /* ESC to close reader */
+    document.addEventListener('keydown', (e)=> {
+      if(e.key === 'Escape') {
+        const reader = document.getElementById('reader');
+        if(reader && !reader.classList.contains('hidden')) closeReader();
+      }
+    });
+
+    /* initial boot */
+    document.addEventListener('DOMContentLoaded', ()=>{
+      applyTheme();
+      document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
       renderPosts();
-      document.addEventListener('keydown', (e)=> { if(e.key==='Escape') closeReader(); });
     });
 </script>
+
 </body>
 </html>

@@ -1,323 +1,146 @@
-<!DOCTYPE html>
+<!--
+File collection: copy each file into your project exactly as named.
+Place the `posts/` folder in the same directory as `index.html` and `blog.html`.
+
+Files included below:
+- index.html
+- blog.html
+- posts/posts.json
+- posts/welcome-post.md (sample)
+
+Dependencies are loaded via CDN (Tailwind, marked.js, highlight.js).
+This system uses posts/posts.json to list posts and posts/<slug>.md markdown files for content.
+-->
+
+/* ======================
+index.html
+====================== */
+
+<!doctype html>
 <html lang="bn">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>CSC Hub — Professional Store & Blog</title>
-    <meta name="author" content="Priyanko Manna">
-    <meta name="description" content="CSC Hub — Blog, Products, Videos, Services. Built for CSC centers to sell products, publish guides and host video tutorials.">
+    <meta name="description" content="CSC Hub — আপনার ডিজিটাল সার্ভিস, পণ্য ও ব্লগ">
 
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Marked (Markdown parser) for previews if needed -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
+    <!-- dayjs for friendly dates -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <style>
-        :root{--brand:#0d6efd;--muted:#6c757d}
-        body{font-family:'Jost',system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; padding-top:82px}
-        .hero{background:linear-gradient(90deg,#0f172a,#111827);color:#fff}
-        .product-img{height:160px;object-fit:cover;border-radius:6px}
-        .video-thumb{height:140px;object-fit:cover;border-radius:6px}
-        .search-input{max-width:420px}
-        .preloader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#fff;z-index:9999}
-        .cart-badge{position:relative}
-        .cart-badge .badge{position:absolute;top:-8px;right:-10px}
-        footer{background:#0b1220;color:#fff}
+        /* small visual polish */
+        .card-shadow{ box-shadow: 0 6px 18px rgba(15,23,42,0.08); }
+        .gradient-hero{ background: linear-gradient(90deg,#0ea5a4 0%,#3b82f6 100%);}
+        .prose-custom p{ margin-bottom: 0.9rem; }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 antialiased">
 
-<!-- Preloader -->
-<div class="preloader" id="preloader"><img src="ajax-loader.gif" alt="Loading" width="48"></div>
-
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold text-primary" href="#">CSC Hub</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="nav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
-                <li class="nav-item"><a class="nav-link" href="#videos">Videos</a></li>
-                <li class="nav-item"><a class="nav-link" href="#blog">Blog</a></li>
-            </ul>
-            <form class="d-flex me-3" onsubmit="return false;">
-                <input id="globalSearch" class="form-control search-input" placeholder="Search products, posts...">
-            </form>
-            <div class="d-flex align-items-center">
-                <button class="btn btn-outline-secondary me-2" id="openCartBtn" data-bs-toggle="offcanvas" data-bs-target="#cartCanvas">
-                    Cart <span id="cartCount" class="badge bg-danger">0</span>
-                </button>
-                <a class="btn btn-primary" href="#contact">Contact</a>
-            </div>
+<!-- NAV -->
+<header class="max-w-5xl mx-auto p-4 md:p-6 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center card-shadow">
+            <span class="font-semibold text-lg text-sky-600">CSC</span>
         </div>
-    </div>
-</nav>
-
-<!-- Hero -->
-<header class="hero text-center py-5">
-    <div class="container">
-        <h1 class="display-5 fw-bold">CSC Hub — আপনার ডিজিটাল সার্ভিস, পণ্য ও ব্লগ</h1>
-        <p class="lead">প্রোডাক্ট বিক্রি করুন, ভিডিও টিউটোরিয়াল শেয়ার করুন এবং ব্লগ পোস্ট লিখুন — সব এক জায়গায়।</p>
-        <div class="mt-3">
-            <a href="#products" class="btn btn-light btn-lg me-2">দোকান দেখুন</a>
-            <a href="#blog" class="btn btn-outline-light btn-lg">ব্লগ পড়ুন</a>
+        <div>
+            <div class="text-lg font-semibold">CSC Hub</div>
+            <div class="text-xs text-slate-500">আপনার ডিজিটাল সার্ভিস, পণ্য ও ব্লগ</div>
         </div>
-    </div>
+    </a>
+    <nav class="hidden md:flex gap-4 items-center text-sm">
+        <a href="#" class="text-slate-600 hover:text-slate-900">Shop</a>
+        <a href="index.html" class="text-slate-600 hover:text-slate-900">Blog</a>
+        <a href="#contact" class="text-slate-600 hover:text-slate-900">Contact</a>
+    </nav>
 </header>
 
-<!-- Services -->
-<section id="services" class="py-5">
-    <div class="container">
-        <h2 class="mb-4">আমাদের সার্ভিস</h2>
-        <div class="row g-3">
-            <div class="col-md-4"><div class="p-4 border rounded">Aadhaar Enrollment & Update</div></div>
-            <div class="col-md-4"><div class="p-4 border rounded">PAN Card Application</div></div>
-            <div class="col-md-4"><div class="p-4 border rounded">Mobile & DTH Recharge</div></div>
-        </div>
-    </div>
-</section>
+<!-- HERO -->
+<main class="max-w-5xl mx-auto px-4 md:px-6">
+    <section class="rounded-2xl overflow-hidden gradient-hero text-white p-8 md:p-12 mb-8">
+        <h1 class="text-3xl md:text-4xl font-extrabold">CSC Hub — Professional Store & Blog</h1>
+        <p class="mt-2 text-slate-100/90 max-w-2xl">প্রোডাক্ট বিক্রি করুন, ভিডিও টিউটোরিয়াল শেয়ার করুন এবং ব্লগ পোস্ট লেখুন — সব এক জায়গায়। প্রতিদিন নতুন পোস্ট পাবলিশ করুন।</p>
+    </section>
 
-<!-- Products -->
-<section id="products" class="py-5 bg-light">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>Shop Products</h2>
+    <!-- Latest posts list -->
+    <section>
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold">Latest Blog Posts</h2>
+            <div class="text-sm text-slate-500">Updated dynamically from posts/posts.json</div>
+        </div>
+
+        <div id="post-list" class="grid gap-4">
+            <!-- JS will inject cards here -->
+        </div>
+
+    </section>
+
+    <!-- Contact & Footer -->
+    <footer id="contact" class="mt-12 mb-12 text-sm text-slate-600">
+        <div class="border-t pt-6 flex flex-col md:flex-row justify-between">
             <div>
-                <select id="sortProducts" class="form-select form-select-sm">
-                    <option value="new">Newest</option>
-                    <option value="price-asc">Price: Low &uarr;</option>
-                    <option value="price-desc">Price: High &darr;</option>
-                </select>
+                <div class="font-semibold">Contact</div>
+                <div class="mt-1">Email: mtpl.kolaghat@gmail.com | Phone: +91-8967744210</div>
+                <div class="mt-1">Address: Kolaghat, West Bengal 721154</div>
             </div>
+            <div class="mt-4 md:mt-0 text-right">© 2025 CSC Hub — Powered by খোলাপাতা</div>
         </div>
+    </footer>
 
-        <div id="productsGrid" class="row g-3">
-            <!-- JS injects product cards -->
-        </div>
-    </div>
-</section>
-
-<!-- Videos -->
-<section id="videos" class="py-5">
-    <div class="container">
-        <h2 class="mb-4">Video Tutorials</h2>
-        <div id="videoGrid" class="row g-3">
-            <!-- JS injects video thumbnails -->
-        </div>
-    </div>
-</section>
-
-<!-- Blog -->
-<section id="blog" class="py-5 bg-light">
-    <div class="container">
-        <h2 class="mb-4">Latest Blog Posts</h2>
-        <div id="blog-list" class="row g-4"></div>
-        <div class="mt-4 text-muted small">পোষ্ট যোগ করতে: <code>posts/</code> ফোল্ডারে নতুন <code>.md</code> ফাইল রাখুন এবং <code>js</code>-এ <code>posts</code> অ্যারে আপডেট করুন।</div>
-    </div>
-</section>
-
-<!-- Contact -->
-<section id="contact" class="py-5">
-    <div class="container text-center">
-        <h3>Contact</h3>
-        <p class="text-muted">Email: mtpl.kolaghat@gmail.com | Phone: +91-8967744210</p>
-        <p class="text-muted">Address: Kolaghat, West Bengal 721154</p>
-    </div>
-</section>
-
-<!-- Footer -->
-<footer class="py-4 text-center">
-    <div class="container">
-        <p class="mb-0">© <span id="year"></span> CSC Hub — Powered by খোলাপাতা</p>
-    </div>
-</footer>
-
-<!-- Offcanvas Cart -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="cartCanvas">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title">Your Cart</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body d-flex flex-column">
-        <div id="cartItems" class="mb-3"></div>
-        <div class="mt-auto">
-            <div class="d-flex justify-content-between mb-2"><strong>Total:</strong><strong id="cartTotal">₹0</strong></div>
-            <button id="checkoutBtn" class="btn btn-primary w-100">Checkout (demo)</button>
-        </div>
-    </div>
-</div>
-
-<!-- Product / Video Modal -->
-<div class="modal fade" id="itemModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 id="itemModalTitle" class="modal-title"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div id="itemModalBody"></div>
-            </div>
-            <div class="modal-footer">
-                <button id="modalAddCart" class="btn btn-success">Add to Cart</button>
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</main>
 
 <script>
-    // --- Basic data: replace / extend these arrays with your server-generated data or JSON files ---
-    const PRODUCTS = [
-      {id:'p1',title:'Aadhaar Form Bundle',price:49,desc:'Printed Aadhaar forms + guidance',img:'images/product-aadhaar.jpg',date:'2025-09-01'},
-      {id:'p2',title:'PAN Application Kit',price:99,desc:'PAN form + scanning service',img:'images/product-pan.jpg',date:'2025-08-20'},
-      {id:'p3',title:'Xerox Pack (50 pages)',price:120,desc:'High quality mono xerox',img:'images/product-xerox.jpg',date:'2025-09-10'}
-    ];
+    // Fetch posts list and render
+    async function loadPosts(){
+      try{
+        const res = await fetch('posts/posts.json',{cache:'no-store'});
+        if(!res.ok) throw new Error('Could not load posts list');
+        const posts = await res.json();
+        const container = document.getElementById('post-list');
+        // sort by date desc
+        posts.sort((a,b)=> new Date(b.date) - new Date(a.date));
+        posts.forEach(p=>{
+          const slug = p.slug || p.file.replace(/\.md$/,'');
+          const card = document.createElement('article');
+          card.className = 'bg-white p-4 rounded-xl card-shadow flex flex-col md:flex-row gap-4 items-stretch';
 
-    const VIDEOS = [
-      {id:'v1',title:'How to Update Aadhaar Online',thumb:'images/video-aadhaar.jpg',youtube:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
-      {id:'v2',title:'PAN Card Process Explained',thumb:'images/video-pan.jpg',youtube:'https://www.youtube.com/embed/dQw4w9WgXcQ'}
-    ];
+          const left = document.createElement('div');
+          left.className = 'flex-1';
+          left.innerHTML = `
+            <a href="blog.html?post=${encodeURIComponent(slug)}" class="text-lg font-semibold text-slate-900 hover:text-sky-600 block">${escapeHtml(p.title)}</a>
+            <div class="text-xs text-slate-500 mt-1">${formatDate(p.date)} • ${escapeHtml(p.excerpt || '')}</div>
+          `;
 
-    const POSTS = [
-      {file:'posts/demo.md',title:'Welcome Post',date:'2025-09-13'}
-    ];
+          const right = document.createElement('div');
+          right.className = 'text-right md:text-left md:w-36 flex md:flex-col items-center justify-center gap-2';
+          right.innerHTML = `
+            <div class="text-sm font-medium text-sky-600">${p.price? '₹'+p.price : ''}</div>
+            <a href="blog.html?post=${encodeURIComponent(slug)}" class="inline-block mt-2 md:mt-4 bg-sky-600 text-white px-3 py-2 rounded-md text-sm">Read</a>
+          `;
 
-    // Utility: format INR
-    function fmtINR(n){return '₹'+Number(n).toLocaleString('en-IN')}
-
-    // DOM refs
-    const productsGrid = document.getElementById('productsGrid');
-    const videoGrid = document.getElementById('videoGrid');
-    const blogList = document.getElementById('blog-list');
-
-    // Cart (localStorage)
-    let CART = JSON.parse(localStorage.getItem('csc_cart')||'{}');
-    function saveCart(){localStorage.setItem('csc_cart', JSON.stringify(CART)); updateCartUI();}
-    function addToCart(id, qty=1){CART[id]=(CART[id]||0)+qty; saveCart();}
-    function removeFromCart(id){delete CART[id]; saveCart();}
-    function cartItems(){return Object.entries(CART).map(([id,q])=>{const p=PRODUCTS.find(x=>x.id===id); return {...p,qty:q}})}
-
-    function updateCartUI(){
-      const items = cartItems();
-      document.getElementById('cartCount').textContent = items.reduce((s,i)=>s+i.qty,0);
-      const cartItemsEl = document.getElementById('cartItems'); cartItemsEl.innerHTML='';
-      let total=0;
-      if(items.length===0){cartItemsEl.innerHTML='<p class="text-muted">Cart is empty.</p>'}
-      items.forEach(it=>{
-        const div = document.createElement('div'); div.className='d-flex align-items-center mb-2';
-        div.innerHTML = `<img src="${it.img}" width="60" height="48" style="object-fit:cover;border-radius:6px" class="me-2"><div class="flex-grow-1"><div>${it.title}</div><small class="text-muted">${fmtINR(it.price)} × ${it.qty}</small></div><div class="ms-2 text-end"><button class="btn btn-sm btn-link text-danger" data-id="${it.id}">Remove</button></div>`;
-        cartItemsEl.appendChild(div);
-        total += it.price * it.qty;
-      });
-      document.getElementById('cartTotal').textContent = fmtINR(total);
-      cartItemsEl.querySelectorAll('button[data-id]').forEach(b=>b.addEventListener('click', ()=>{removeFromCart(b.dataset.id);}));
-    }
-
-    // Render products
-    function renderProducts(list){
-      productsGrid.innerHTML='';
-      if(list.length===0){productsGrid.innerHTML='<p class="text-muted">No products found.</p>';return}
-      list.forEach(p=>{
-        const col = document.createElement('div'); col.className='col-md-4';
-        col.innerHTML = `
-          <div class="card h-100">
-            <img src="${p.img}" class="product-img card-img-top" alt="${p.title}">
-            <div class="card-body d-flex flex-column">
-              <h5 class="card-title">${p.title}</h5>
-              <p class="text-muted small mb-2">${p.desc}</p>
-              <div class="mt-auto d-flex justify-content-between align-items-center">
-                <strong>${fmtINR(p.price)}</strong>
-                <div>
-                  <button class="btn btn-sm btn-outline-primary me-2" data-id="${p.id}" data-action="view">View</button>
-                  <button class="btn btn-sm btn-primary" data-id="${p.id}" data-action="add">Add</button>
-                </div>
-              </div>
-            </div>
-          </div>`;
-        productsGrid.appendChild(col);
-      });
-      // attach handlers
-      productsGrid.querySelectorAll('button[data-action]').forEach(b=>{
-        const id=b.dataset.id, action=b.dataset.action;
-        b.addEventListener('click', ()=>{
-          const product = PRODUCTS.find(x=>x.id===id);
-          if(action==='add'){ addToCart(id); }
-          else if(action==='view'){ openItemModal(product); }
+          card.appendChild(left);
+          card.appendChild(right);
+          container.appendChild(card);
         });
-      });
+      }catch(err){
+        console.error(err);
+        document.getElementById('post-list').innerHTML = '<div class="p-6 bg-white rounded-xl card-shadow text-red-600">রেকর্ড লোড করা যায়নি। posts/posts.json চেক করুন।</div>';
+      }
     }
 
-    // Render videos
-    function renderVideos(){ videoGrid.innerHTML=''; VIDEOS.forEach(v=>{
-      const col=document.createElement('div'); col.className='col-md-4';
-      col.innerHTML=`
-        <div class="card h-100">
-          <img src="${v.thumb}" class="video-thumb card-img-top" alt="${v.title}">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">${v.title}</h5>
-            <div class="mt-auto d-flex justify-content-between align-items-center">
-              <button class="btn btn-sm btn-outline-primary" data-id="${v.id}" data-action="play">Play</button>
-              <a class="btn btn-sm btn-link" href="${v.youtube}" target="_blank">Open on YouTube</a>
-            </div>
-          </div>
-        </div>`;
-      videoGrid.appendChild(col);
-    });
-    // attach handlers
-    videoGrid.querySelectorAll('button[data-action="play"]').forEach(b=>b.addEventListener('click', ()=>{
-      const v = VIDEOS.find(x=>x.id===b.dataset.id); openVideoModal(v);
-    })); }
-
-    // Blog loader
-    async function fetchMd(path){ try{ const r=await fetch(path); if(!r.ok) throw new Error('Not found'); const md=await r.text(); return marked.parse(md);}catch(e){return `<p class="text-danger">Error loading ${path}: ${e.message}</p>`} }
-    async function loadPosts(){ blogList.innerHTML=''; for(const p of POSTS){ const html = await fetchMd(p.file); const col=document.createElement('div'); col.className='col-md-6'; col.innerHTML=`<div class="card h-100"><div class="card-body"><h5 class="card-title">${p.title}</h5><p class="text-muted small">${p.date}</p><div class="card-text">${html}</div></div></div>`; blogList.appendChild(col);} }
-
-    // Modal helpers
-    const itemModal = new bootstrap.Modal(document.getElementById('itemModal'));
-    function openItemModal(product){ document.getElementById('itemModalTitle').textContent=product.title; document.getElementById('itemModalBody').innerHTML = `
-      <div class="row g-3"><div class="col-md-6"><img src="${product.img}" class="img-fluid rounded"></div><div class="col-md-6"><p>${product.desc}</p><p><strong>Price: ${fmtINR(product.price)}</strong></p></div></div>`; document.getElementById('modalAddCart').onclick = ()=>{ addToCart(product.id); itemModal.hide(); }; itemModal.show(); }
-    function openVideoModal(v){ document.getElementById('itemModalTitle').textContent=v.title; document.getElementById('itemModalBody').innerHTML = `<div class="ratio ratio-16x9"><iframe src="${v.youtube}" title="${v.title}" allowfullscreen></iframe></div>`; document.getElementById('modalAddCart').style.display='none'; itemModal.show(); }
-
-    // Search & sort
-    function performSearch(q){ q=q.trim().toLowerCase(); if(!q) { renderProducts(PRODUCTS); loadPosts(); return }
-      const pFiltered = PRODUCTS.filter(p=> (p.title+ ' '+p.desc).toLowerCase().includes(q)); renderProducts(pFiltered);
-      // filter posts by filename/title
-      // create a simple client-side filter by updating POSTS displayed
-      // (we don't re-fetch files names here for simplicity)
+    function formatDate(d){
+      try{ return dayjs(d).format('YYYY-MM-DD'); }catch(e){ return d; }
     }
+    function escapeHtml(s){ if(!s) return ''; return s.replace(/[&<>\"]+/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]||c)); }
 
-    document.getElementById('globalSearch').addEventListener('input', e=>performSearch(e.target.value));
-    document.getElementById('sortProducts').addEventListener('change', e=>{
-      const v=e.target.value; let arr=[...PRODUCTS]; if(v==='price-asc') arr.sort((a,b)=>a.price-b.price); else if(v==='price-desc') arr.sort((a,b)=>b.price-a.price); else arr.sort((a,b)=> new Date(b.date)-new Date(a.date)); renderProducts(arr);
-    });
-
-    // Checkout demo
-    document.getElementById('checkoutBtn').addEventListener('click', ()=>{
-      alert('This is a demo checkout. Integrate a payment gateway (PayTM, Razorpay) for live payments.');
-    });
-
-    // Init
-    document.addEventListener('DOMContentLoaded', ()=>{
-      // hide preloader
-      const p = document.getElementById('preloader'); if(p) p.style.display='none';
-      document.getElementById('year').textContent = new Date().getFullYear();
-      renderProducts(PRODUCTS);
-      renderVideos();
-      loadPosts();
-      updateCartUI();
-    });
-
-    // Expose a small API for server-side integration
-    window.CSC = { addToCart, removeFromCart, PRODUCTS, VIDEOS, POSTS };
+    loadPosts();
 </script>
-
 </body>
 </html>
+
+
+

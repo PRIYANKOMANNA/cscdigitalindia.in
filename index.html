@@ -156,11 +156,11 @@
         <div class="flex items-center justify-between mb-4">
             <h2 class="text-2xl text-green-300">📡 Latest Blog Posts</h2>
             <div class="flex gap-3 items-center">
-                <label for="search"></label><input id="search" class="px-3 py-2 rounded-lg bg-transparent border border-cyan-700 text-sm text-gray-200" placeholder="Search posts..." />
-                <label for="sort"></label><select id="sort" class="px-3 py-2 rounded-lg bg-transparent border border-cyan-700 text-sm text-gray-200">
-                    <option value="new">Newest first</option>
-                    <option value="old">Oldest first</option>
-                </select>
+                <label for="search" class="sr-only">Search posts</label><input id="search" class="px-3 py-2 rounded-lg bg-transparent border border-cyan-700 text-sm text-gray-200" placeholder="Search posts..." />
+                <label for="sort" class="sr-only">Sort posts</label><select id="sort" class="px-3 py-2 rounded-lg bg-transparent border border-cyan-700 text-sm text-gray-200">
+                <option value="new">Newest first</option>
+                <option value="old">Oldest first</option>
+            </select>
             </div>
         </div>
         <div id="postsList" class="grid grid-cols-1 md:grid-cols-2 gap-4" aria-live="polite"></div>
@@ -192,7 +192,7 @@
     <div class="relative w-full max-w-4xl bg-transparent">
         <div class="aspect-[16/9] bg-black rounded-lg overflow-hidden">
             <!-- iframe starts empty, src set only on open -->
-            <iframe id="videoFrame" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;"></iframe>
+            <iframe id="videoFrame" src="https://youtube.com/shorts/UuBPrtLTzTE?feature=share" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;"></iframe>
         </div>
         <div class="mt-3 flex justify-end">
             <button class="glow-btn" onclick="closeVideo()">Close</button>
@@ -207,6 +207,18 @@
 </footer>
 
 <script>
+    /* -------------------------
+       Marked default options
+       ------------------------- */
+    if (window.marked) {
+      marked.setOptions({
+        gfm: true,
+        breaks: false,
+        smartLists: true,
+        smartypants: false
+      });
+    }
+
     /* -------------------------
        Utility & theme handling
        ------------------------- */
@@ -250,21 +262,28 @@
     async function fetchMarkdown(path){
       try{
         const res = await fetch(path, { cache: "no-store" });
-        if(!res.ok) return `# Error\nCould not load ${path} (status ${res.status})`;
+        if(!res.ok) {
+          console.warn('fetchMarkdown non-ok', path, res.status);
+          return `# Error\nCould not load ${path} (status ${res.status})`;
+        }
         return await res.text();
       } catch(err){
-        return `# Error\nNetwork error loading ${path}\n\n${err.message}`;
+        console.error('fetchMarkdown error', path, err);
+        return `# Error\nNetwork error loading ${path}\n\n${escapeHtml(err.message || String(err))}`;
       }
     }
+
     function mdToSanitizedHtml(md){
       try{
         const rawHtml = marked.parse(md || "");
-        const clean = DOMPurify.sanitize(rawHtml, {ALLOWED_TAGS: false});
+        // use default DOMPurify behavior (safe sanitization)
+        const clean = DOMPurify.sanitize(rawHtml);
         return clean;
       } catch(e){
         return `<pre>${escapeHtml(String(e.message || e))}</pre>`;
       }
     }
+
     function escapeHtml(str){ return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
     function fmtDate(d){
       try{
@@ -332,7 +351,9 @@
         else url.searchParams.delete('post');
         if(replace) history.replaceState({post: encoded}, '', url);
         else history.pushState({post: encoded}, '', url);
-      }catch(e){}
+      }catch(e){
+        console.warn('setUrlPostParam error', e);
+      }
     }
     function getUrlPostParam(){
       try{ const url = new URL(window.location.href); const p = url.searchParams.get('post'); return p ? p : null; } catch(e){ return null; }
@@ -348,13 +369,20 @@
       reader.setAttribute('aria-hidden','false');
       document.body.style.overflow = 'hidden';
       const encoded = encodeURIComponent(item.file);
-      if(pushUrl) setUrlPostParam(encoded, replaceOnly); else setUrlPostParam(encoded, true);
+      if (pushUrl) {
+        setUrlPostParam(encoded, replaceOnly);
+      } else {
+        // still update URL in-place for shareability (replace)
+        setUrlPostParam(encoded, true);
+      }
     }
     function closeReader(){
       const reader = document.getElementById('reader');
       reader.classList.add('hidden'); reader.style.display='none';
       reader.setAttribute('aria-hidden','true');
       document.body.style.overflow = '';
+      // remove post param from URL when reader closed
+      try { setUrlPostParam(null, true); } catch(e){}
     }
 
     /* popstate handling */
@@ -430,6 +458,19 @@
           openVideo(id);
         });
 
+        // accessibility: make overlay keyboard-focusable and react to Enter/Space
+        if(overlay){
+          overlay.setAttribute('role','button');
+          overlay.setAttribute('tabindex','0');
+          overlay.addEventListener('keydown', (ev) => {
+            if(ev.key === 'Enter' || ev.key === ' ' || ev.key === 'Spacebar'){
+              ev.preventDefault();
+              const id = overlay.getAttribute('data-id');
+              openVideo(id);
+            }
+          });
+        }
+
         // "Open" button (same behavior)
         card.querySelector('.btn-play-modal')?.addEventListener('click', (ev)=>{
           ev.stopPropagation();
@@ -447,7 +488,7 @@
       const safeId = safeIdMatch ? safeIdMatch[0] : '';
       if(!safeId){ alert('Invalid video id'); return; }
       const frame = document.getElementById('videoFrame');
-      // set embed src with autoplay=1
+      // use nocookie domain if you prefer privacy: youtube-nocookie.com
       frame.src = `https://www.youtube.com/embed/${encodeURIComponent(safeId)}?autoplay=1&rel=0`;
       const modal = document.getElementById('videoModal');
       modal.classList.remove('hidden'); modal.style.display='flex';

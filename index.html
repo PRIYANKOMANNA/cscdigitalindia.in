@@ -16,20 +16,57 @@
     <script src="https://cdn.jsdelivr.net/npm/dompurify@2.4.0/dist/purify.min.js"></script>
 
     <style>
-        :root{--neon-cyan: #00ffe7;--neon-mag: #ff00f7;--card-bg: rgba(255,255,255,0.03);}
-        body{font-family: 'Rajdhani', sans-serif;background: radial-gradient(circle at 10% 10%, #071026 0%, #081827 20%, #071a2b 45%, #081a29 100%);color: #e6f7ff;-webkit-font-smoothing:antialiased;}
+        /* ---------- Theme & base ---------- */
+        :root{
+          --neon-cyan: #00ffe7;
+          --neon-mag: #ff00f7;
+          --card-bg: rgba(255,255,255,0.03);
+          --spin-duration: 6s; /* default rotation speed */
+        }
+        body{
+          font-family: 'Rajdhani', sans-serif;
+          background: radial-gradient(circle at 10% 10%, #071026 0%, #081827 20%, #071a2b 45%, #081a29 100%);
+          color: #e6f7ff;
+          -webkit-font-smoothing:antialiased;
+          margin:0;
+        }
         header{ font-family:'Orbitron',sans-serif; }
-        .glow-card{background: var(--card-bg);border: 1px solid rgba(0,255,235,0.08);backdrop-filter: blur(6px);transition: transform .25s, box-shadow .25s;}
-        .glow-card:hover{ transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,255,235,0.06);}
-        .glow-btn{background: linear-gradient(135deg,var(--neon-cyan),#0077ff);color:#021020; padding:.6rem 1.1rem; border-radius:9999px; font-weight:700;}
-        .glow-btn:hover{ box-shadow: 0 8px 34px rgba(0,255,235,0.12); transform: translateY(-2px);}
+        .glow-card{
+          background: var(--card-bg);
+          border: 1px solid rgba(0,255,235,0.08);
+          backdrop-filter: blur(6px);
+          transition: transform .25s, box-shadow .25s;
+        }
+        .glow-card:hover{ transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,255,235,0.06); }
+        .glow-btn{
+          background: linear-gradient(135deg,var(--neon-cyan),#0077ff);
+          color:#021020;
+          padding:.6rem 1.1rem;
+          border-radius:9999px;
+          font-weight:700;
+        }
+        .glow-btn:hover{ box-shadow: 0 8px 34px rgba(0,255,235,0.12); transform: translateY(-2px); }
+
         .reader-backdrop{ background: linear-gradient(180deg, rgba(3,6,12,0.6), rgba(1,4,7,0.85)); }
         .post-body h1{font-family:'Orbitron'; font-size:1.5rem; color:var(--neon-cyan);}
         .post-body h2{font-family:'Orbitron'; color:#9be7ff;}
         .post-body a{color: #ffd1ff; text-decoration: underline;}
         .post-body code{background: rgba(255,255,255,0.03);padding: 2px 6px;border-radius:6px;color:#f0f0f0;}
-        .nebula {position: fixed; inset:0; z-index:-1; pointer-events:none;background-image:radial-gradient(circle at 20% 10%, rgba(255,0,200,0.06) 0 8%, transparent 20%),radial-gradient(circle at 80% 80%, rgba(0,200,255,0.04) 0 12%, transparent 30%),radial-gradient(circle at 50% 40%, rgba(100,80,255,0.03) 0 6%, transparent 16%);mix-blend-mode: screen;filter: blur(30px) saturate(120%);opacity: 0.9;}
-        html.dark body{background: radial-gradient(circle at 10% 10%, #070d18 0%, #081018 20%, #07131b 45%, #08121a 100%);color: #bbf7d0;}
+
+        .nebula {
+          position: fixed; inset:0; z-index:-1; pointer-events:none;
+          background-image:
+            radial-gradient(circle at 20% 10%, rgba(255,0,200,0.06) 0 8%, transparent 20%),
+            radial-gradient(circle at 80% 80%, rgba(0,200,255,0.04) 0 12%, transparent 30%),
+            radial-gradient(circle at 50% 40%, rgba(100,80,255,0.03) 0 6%, transparent 16%);
+          mix-blend-mode: screen;
+          filter: blur(30px) saturate(120%);
+          opacity: 0.9;
+        }
+        html.dark body{
+          background: radial-gradient(circle at 10% 10%, #070d18 0%, #081018 20%, #07131b 45%, #08121a 100%);
+          color: #bbf7d0;
+        }
 
         /* thumbnails */
         .thumb { width:96px; height:72px; object-fit:cover; border-radius:8px; border:1px solid rgba(255,255,255,0.03); }
@@ -39,14 +76,9 @@
         .yt-thumb { width:100%; height:160px; object-fit:cover; border-radius:8px; display:block; }
         .yt-card { position:relative; overflow:hidden; }
         .yt-overlay {
-          position:absolute;
-          inset:0;
-          display:flex;
-          align-items:center;
-          justify-content:center;
+          position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
           background:linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.18));
-          transition: background .18s ease;
-          cursor:pointer;
+          transition: background .18s ease; cursor:pointer;
         }
         .yt-overlay:hover { background:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.28)); }
         .yt-play {
@@ -63,6 +95,44 @@
           .yt-play { width:56px; height:56px; }
           .yt-play svg { width:22px; height:22px; }
         }
+
+        /* ---------- Rotating header image (new) ---------- */
+        .header-rotate {
+          width:56px;
+          height:56px;
+          object-fit:cover;
+          border-radius:12px;
+          border:1px solid rgba(255,255,255,0.06);
+          box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+          display:inline-block;
+          /* default: hover-rotate; continuous can be toggled by script by adding .force-animate */
+        }
+
+        /* spin animation */
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+
+        /* hover-only rotation (default UX) */
+        .header-rotate.hover-spin:hover {
+          animation: spin var(--spin-duration) linear infinite;
+        }
+
+        /* force continuous animation */
+        .header-rotate.force-animate {
+          animation: spin var(--spin-duration) linear infinite;
+        }
+
+        /* pause when hovering if forced so user can inspect */
+        .header-rotate.force-animate:hover { animation-play-state: paused; cursor: pointer; }
+
+        /* accessibility: respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .header-rotate.hover-spin:hover,
+          .header-rotate.force-animate { animation: none !important; transform: none !important; }
+        }
+
     </style>
 </head>
 
@@ -88,9 +158,31 @@
 <header class="text-center py-8 px-4">
     <h1 class="text-4xl font-bold tracking-wider text-cyan-200">পুলসিটা হাঁসি খুশি জেরক্স</h1>
     <p class="text-gray-300 text-lg mt-1">আপনার ডিজিটাল সার্ভিস, পণ্য ও ব্লগ — সব এক জায়গায়</p>
-    <div class="mt-5 flex justify-center gap-4">
+
+    <div class="mt-5 flex justify-center items-center gap-4">
         <a href="#shop" class="glow-btn">🛒 দোকান</a>
         <a href="#blog" class="glow-btn">📝 ব্লগ</a>
+
+        <!-- Rotating image in header -->
+        <!-- Replace the src below with your image path in repo or CDN:
+             - GitHub Pages relative: "images/new-rot.png" or "/images/new-rot.png"
+             - Full URL: "https://yourdomain.com/images/new-rot.png" -->
+        <div class="flex items-center gap-2">
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener" title="আমাদের YouTube চ্যানেল" aria-label="YouTube channel">
+                <img id="headerRotImg" class="header-rotate hover-spin" src="images/new-rot.png" alt="YouTube Channel" />
+            </a>
+
+            <!-- small control: toggle continuous rotation and speed -->
+            <div class="flex items-center gap-2">
+                <button id="toggleRotate" class="glow-btn" aria-pressed="false" title="Toggle continuous rotation">🔁</button>
+                <select id="spinSpeed" class="px-3 py-2 rounded-lg bg-transparent border border-cyan-700 text-sm text-gray-200" title="Rotation speed">
+                    <option value="3s">Fast (3s)</option>
+                    <option value="6s" selected>Normal (6s)</option>
+                    <option value="10s">Slow (10s)</option>
+                </select>
+            </div>
+        </div>
+
         <button id="themeToggle" class="glow-btn ml-2" type="button" aria-pressed="false">🌗 থিম</button>
     </div>
 </header>
@@ -570,7 +662,8 @@
     document.addEventListener('DOMContentLoaded', ()=>{
       applyTheme();
       document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
-      // init posts & videos
+
+      // Initialize posts and videos
       if(!window.__postsCache) {
         initPostInfinite().catch(e => { console.error('initPostInfinite error', e); postsContainer.innerHTML = '<div class="text-gray-400">Failed to load posts.</div>'; });
       } else {
@@ -578,6 +671,40 @@
         buildCurrentListAndReset();
       }
       renderVideos();
+
+      // Header rotating image controls
+      const headerImg = document.getElementById('headerRotImg');
+      const toggleBtn = document.getElementById('toggleRotate');
+      const speedSelect = document.getElementById('spinSpeed');
+
+      // Initialize speed from select
+      if(speedSelect){
+        document.documentElement.style.setProperty('--spin-duration', speedSelect.value || '6s');
+        speedSelect.addEventListener('change', (e) => {
+          document.documentElement.style.setProperty('--spin-duration', e.target.value || '6s');
+        });
+      }
+
+      // Toggle continuous rotation
+      if(toggleBtn && headerImg){
+        toggleBtn.addEventListener('click', ()=>{
+          const forced = headerImg.classList.toggle('force-animate');
+          // keep hover-spin in non-forced mode
+          if(forced) headerImg.classList.remove('hover-spin'); else headerImg.classList.add('hover-spin');
+          toggleBtn.setAttribute('aria-pressed', String(forced));
+          toggleBtn.textContent = forced ? '⏸️' : '🔁';
+        });
+      }
+
+      // Respect prefers-reduced-motion — disable animation & controls
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if(reduce && reduce.matches){
+        headerImg?.classList.remove('hover-spin','force-animate');
+        toggleBtn?.setAttribute('disabled','true');
+        toggleBtn?.setAttribute('aria-pressed','false');
+      }
+
+      // keyboard escape close handlers
       document.addEventListener('keydown',(e)=>{
         if(e.key==='Escape'){ closeReader(); closeVideo(); }
       });
